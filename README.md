@@ -46,7 +46,7 @@
     <tr>
       <td>Dvij Barot</td>
       <td>FullStack Development and Documentation</td>
-      <td>Defect Reporting and Tracking, Test Documentation, Collaboration, and Communication:</td>
+      <td>Defect Reporting and Tracking, Test Documentation, Collaboration, and Communication</td>
     </tr>
   </table>
 
