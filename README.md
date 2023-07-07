@@ -35,7 +35,7 @@
     </tr>
     <tr>
       <td>Urvishkumar Kapadiya</td>
-      <td>FullStake Development</td>
+      <td>FullStack Development</td>
       <td>Back-end Development,Database Management</td>
     </tr>
     <tr>
@@ -45,7 +45,7 @@
     </tr>
     <tr>
       <td>Dvij Barot</td>
-      <td>Testing and Documentation</td>
+      <td>FullStack Development and Documentation</td>
       <td>Defect Reporting and Tracking, Test Documentation, Collaboration, and Communication:</td>
     </tr>
   </table>
