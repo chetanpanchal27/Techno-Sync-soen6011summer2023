@@ -24,7 +24,7 @@
   <tr>
     <td>ravi2799</td>
     <td>Raviraj Bhaveshbhai Savaliya</td>
-    <td>Project Manager</td>
+    <td>Project Manager + Scrum Master</td>
     <td>Collaboration and Project Management, Application Logic and Integration</td>
   </tr>
   <tr>
@@ -48,8 +48,8 @@
   <tr>
     <td>Kenish14</td>
     <td>Kenish Halani</td>
-    <td>Quality Assurance</td>
-    <td>Quality Assurance, Test Planning, Test Case Design, Defect Reporting, and Tracking</td>
+    <td>Quality Assurance + Subject Matter Expert</td>
+    <td>Quality Assurance, Test Planning, Test Case Design, Defect Reporting, and Tracking, Report Creation</td>
   </tr>
 </table>
 
