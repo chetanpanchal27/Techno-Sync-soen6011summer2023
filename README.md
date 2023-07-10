@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,54 +8,53 @@
   <p>This project aims to provide a comprehensive career services platform where students can showcase their portfolios and employers can post job openings. It offers a convenient and efficient way for job seekers to find relevant employment opportunities and for employers to identify potential candidates. The platform allows students to create and update their profiles, apply for jobs, and track their applications. Employers can create job posts, review candidate applications, and select candidates for interviews. The system prioritizes security, ensuring the protection of login credentials and providing notifications to both employers and students.</p>
 
   <h2>Team Members and Roles</h2>
+<table>
+  <tr>
+    <th>Github Username</th>
+    <th>Member</th>
+    <th>Role</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>dvijbarot</td>
+    <td>Dvij Barot</td>
+    <td>Software Architect</td>
+    <td>Design and development of software systems</td>
+  </tr>
+  <tr>
+    <td>ravi2799</td>
+    <td>Raviraj Bhaveshbhai Savaliya</td>
+    <td>Project Manager</td>
+    <td>Collaboration and Project Management, Application Logic and Integration</td>
+  </tr>
+  <tr>
+    <td>Umang070</td>
+    <td>Umang Rakeshbhai Patel</td>
+    <td>Full Stack Developer</td>
+    <td>MongoDB, Express js, React js, Node js</td>
+  </tr>
+  <tr>
+    <td>chetanpanchal27</td>
+    <td>Chetan Sajjansharan Panchal</td>
+    <td>Frontend Developer</td>
+    <td>Design UI/UX</td>
+  </tr>
+  <tr>
+    <td>urvishkapadiya</td>
+    <td>Urvishkumar Kapadiya</td>
+    <td>Backend Developer</td>
+    <td>Backend Development, Database Management</td>
+  </tr>
+  <tr>
+    <td>Kenish14</td>
+    <td>Kenish Halani</td>
+    <td>Quality Assurance</td>
+    <td>Quality Assurance, Test Planning, Test Case Design, Defect Reporting, and Tracking</td>
+  </tr>
+</table>
 
-  <table>
-    <tr>
-      <th>Github Username</th>
-      <th>Member</th>
-      <th>Role</th>
-      <th>Description</th>
-    </tr>
-    <tr>
-      <td>chetanpanchal27</td>
-      <td>Chetan Sajjansharan Panchal</td>
-      <td>FullStack Development</td>
-      <td>Frontend, Deployment and DevOps</td>
-    </tr>
-    <tr>
-      <td>ravi2799</td>
-      <td>Raviraj Bhaveshbhai Savaliya</td>
-      <td>FullStack Development</td>
-      <td>Collaboration and Project Management, Application Logic and Integration</td>
-    </tr>
-    <tr>
-      <td>Umang070</td>
-      <td>Umang Rakeshbhai Patel</td>
-      <td>FullStack Development</td>
-      <td>Back-end Development,Database Management</td>
-    </tr>
-    <tr>
-      <td>urvishkapadiya</td>
-      <td>Urvishkumar Kapadiya</td>
-      <td>FullStack Development</td>
-      <td>Back-end Development, Database Management, and Quality Assurance</td>
-    </tr>
-    <tr>
-      <td>Kenish14</td>
-      <td>Kenish Halani</td>
-      <td>Testing and Documentation</td>
-      <td>Test Planning, Test Case Design, Defect Reporting and Tracking</td>
-    </tr>
-    <tr>
-      <td>dvijbarot</td>
-      <td>Dvij Barot</td>
-      <td>FullStack Development and Documentation</td>
-      <td>Defect Reporting and Tracking, Test Documentation, Collaboration, and Communication</td>
-    </tr>
-  </table>
 
   <h2>Project Approach and Technology</h2>
-
   <p>Our team followed an iterative and collaborative approach to develop this career services platform. We divided the project into multiple sprints to focus on specific functionalities and ensure timely delivery. The development process involved regular meetings, task assignments, and continuous integration of feedback.</p>
 
   <h3>Technology Stack</h3>
@@ -68,9 +64,9 @@
     <li>Back-end: Node.js, Express.js</li>
     <li>Database: MongoDB</li>
     <li>Hosting: GitHub Hosting</li>
+    <li>Version Control:Github</li>
   </ul>
 
-  <p>[Provide details about the technology stack utilized for the project.]</p>
 
   <h2>Detailed Functionaliy of Users</h2>
 
@@ -108,5 +104,3 @@
   </ul>
 </body>
 </html>
-
-
