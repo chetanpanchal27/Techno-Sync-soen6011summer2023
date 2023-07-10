@@ -30,7 +30,7 @@
     </tr>
     <tr>
       <td>Umang Rakeshbhai Patel</td>
-      <td>FullStake Development</td>
+      <td>FullStack Development</td>
       <td>Back-end Development,Database Management</td>
     </tr>
     <tr>
