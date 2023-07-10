@@ -14,36 +14,43 @@
 
   <table>
     <tr>
+      <th>Github Username</th>
       <th>Member</th>
       <th>Role</th>
       <th>Description</th>
     </tr>
     <tr>
+      <td>chetanpanchal27</td>
       <td>Chetan Sajjansharan Panchal</td>
       <td>FullStack Development</td>
       <td>Frontend, Deployment and DevOps</td>
     </tr>
     <tr>
+      <td>ravi2799</td>
       <td>Raviraj Bhaveshbhai Savaliya</td>
       <td>FullStack Development</td>
       <td>Collaboration and Project Management, Application Logic and Integration</td>
     </tr>
     <tr>
+      <td>Umang070</td>
       <td>Umang Rakeshbhai Patel</td>
       <td>FullStack Development</td>
       <td>Back-end Development,Database Management</td>
     </tr>
     <tr>
+      <td>urvishkapadiya</td>
       <td>Urvishkumar Kapadiya</td>
       <td>FullStack Development</td>
-      <td>Back-end Development,Database Management, and Quality Assurance</td>
+      <td>Back-end Development, Database Management, and Quality Assurance</td>
     </tr>
     <tr>
+      <td>Kenish14</td>
       <td>Kenish Halani</td>
       <td>Testing and Documentation</td>
       <td>Test Planning, Test Case Design, Defect Reporting and Tracking</td>
     </tr>
     <tr>
+      <td>dvijbarot</td>
       <td>Dvij Barot</td>
       <td>FullStack Development and Documentation</td>
       <td>Defect Reporting and Tracking, Test Documentation, Collaboration, and Communication</td>
@@ -57,10 +64,10 @@
   <h3>Technology Stack</h3>
 
   <ul>
-    <li>Front-end: [List the technologies, frameworks, or languages used for the front-end development.]</li>
-    <li>Back-end: [List the technologies, frameworks, or languages used for the back-end development.]</li>
-    <li>Database: [Specify the database management system used, if applicable.]</li>
-    <li>Hosting: [Indicate where the platform will be hosted, such as on a cloud platform or a dedicated server.]</li>
+    <li>Front-end: React.js, HTML, CSS, Bootstrap, MaterialUI</li>
+    <li>Back-end: Node.js, Express.js</li>
+    <li>Database: MongoDB</li>
+    <li>Hosting: GitHub Hosting</li>
   </ul>
 
   <p>[Provide details about the technology stack utilized for the project.]</p>
