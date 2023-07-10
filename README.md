@@ -36,7 +36,7 @@
     <tr>
       <td>Urvishkumar Kapadiya</td>
       <td>FullStack Development</td>
-      <td>Back-end Development,Database Management</td>
+      <td>Back-end Development,Database Management, and Quality Assurance</td>
     </tr>
     <tr>
       <td>Kenish Halani</td>
