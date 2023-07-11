@@ -25,7 +25,7 @@
     <td>ravi2799</td>
     <td>Raviraj Bhaveshbhai Savaliya</td>
     <td>Project Manager + Scrum Master</td>
-    <td>Collaboration and Project Management, Application Logic and Integration</td>
+    <td>Collaboration and Project Management, Application Logic and Integration, Sprint Planning</td>
   </tr>
   <tr>
     <td>Umang070</td>
