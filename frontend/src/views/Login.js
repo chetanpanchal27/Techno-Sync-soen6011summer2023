@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   TextField,
   Button,
@@ -10,6 +10,11 @@ import {
 } from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import axios from "axios";
+import apiList from "../Helper/Apis";
+import getToken from "../Helper/Auth";
+import { PopupContext } from "../App";
+import { Navigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -48,6 +53,8 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const setPopup = useContext(PopupContext);
+
   const handleUsernameChange = (event) => {
     console.log("User name -> ", event.target.value);
     setUsername(event.target.value);
@@ -57,7 +64,7 @@ const LoginPage = () => {
     setPassword(event.target.value);
   };
 
-  //   const [loggedin, setLoggedin] = useState(isAuth());
+  const [isLoggedIn, setIsLoggedIn] = useState(getToken());
 
   const [inputError, setInputError] = useState({
     username: {
@@ -98,13 +105,58 @@ const LoginPage = () => {
     console.log("Input Erroe - > ", inputError);
   };
 
+  const handlePasswordError = (event) => {
+    if (event.target.value === "") {
+      handleInputError("password", true, "Password is required");
+    } else {
+      handleInputError("password", false, "");
+    }
+  };
   const handleSubmit = (event) => {
     console.log("Button Clicked !!", username, password);
     event.preventDefault();
     // Perform login logic here with username and password
+    const isComplete = !Object.keys(inputError).some((obj) => {
+      return inputError[obj].error;
+    });
+    const loginDetails = {
+      email: username,
+      password: password,
+    };
+    if (isComplete) {
+      axios
+        .post(apiList.login, loginDetails)
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("type", response.data.type);
+          setIsLoggedIn(getToken());
+          setPopup({
+            open: true,
+            severity: "success",
+            message: "Logged in successfully",
+          });
+          console.log(response);
+        })
+        .catch((err) => {
+          setPopup({
+            open: true,
+            severity: "error",
+            message: err.response.data.message,
+          });
+          console.log(err.response);
+        });
+    } else {
+      setPopup({
+        open: true,
+        severity: "error",
+        message: "Incorrect Input",
+      });
+    }
   };
 
-  return (
+  return isLoggedIn ? (
+    <Navigate to="/signup" />
+  ) : (
     <Grid container>
       <Grid item sm={12} md={6}>
         <div className={styles.body}>
@@ -123,7 +175,11 @@ const LoginPage = () => {
             <Avatar sx={{ bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h2" variant="h5">
+            <Typography
+              variant="h4"
+              component="h2"
+              style={{ color: "#3f51b5", fontWeight: "bold" }}
+            >
               Sign in
             </Typography>
           </div>
@@ -136,7 +192,7 @@ const LoginPage = () => {
               inputError={inputError}
               handleInputError={handleInputError}
               helperText={inputError.username.message}
-              error={inputError.username.message}
+              error={inputError.username.error}
               onBlur={handleUsernameError}
               fullWidth
               margin="normal"
@@ -151,7 +207,7 @@ const LoginPage = () => {
               type="password"
               helperText={inputError.password.message}
               error={inputError.password.message}
-              // onBlur={handlePasswordError}
+              onBlur={handlePasswordError}
               fullWidth
               margin="normal"
             />
@@ -168,7 +224,7 @@ const LoginPage = () => {
               <Link href="#" variant="body2">
                 Forgot password?
               </Link>
-              <Link href="/" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </div>

@@ -10,35 +10,40 @@ import {
   Input,
 } from "@material-ui/core";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import ChipInput from "material-ui-chip-input";
 import DescriptionIcon from "@material-ui/icons/Description";
 import FaceIcon from "@material-ui/icons/Face";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
 
-import PasswordInput from "../lib/PasswordInput";
-import EmailInput from "../lib/EmailInput";
-import FileUploadInput from "../lib/FileUploadInput";
-import { SetPopupContext } from "../App";
+import FileInput from "../Helper/FileInput";
+import { PopupContext } from "../App";
 
-import apiList from "../lib/apiList";
-import isAuth from "../lib/isAuth";
+import apiList from "../Helper/Apis";
+import getToken from "../Helper/Auth";
 
 const useStyles = makeStyles((theme) => ({
   body: {
-    padding: "60px 60px",
+    padding: "30px 30px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
+
   inputBox: {
     width: "400px",
+    marginTop: "18px",
   },
   submitButton: {
     width: "400px",
+    marginTop: "5px",
   },
 }));
 
 const MultifieldInput = (props) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const { education, setEducation } = props;
 
   return (
@@ -47,7 +52,7 @@ const MultifieldInput = (props) => {
         <Grid
           item
           container
-          className={classes.inputBox}
+          className={styles.inputBox}
           key={key}
           style={{ paddingLeft: 0, paddingRight: 0 }}
         >
@@ -105,7 +110,7 @@ const MultifieldInput = (props) => {
               },
             ])
           }
-          className={classes.inputBox}
+          className={styles.inputBox}
         >
           Add another institution details
         </Button>
@@ -115,10 +120,10 @@ const MultifieldInput = (props) => {
 };
 
 const SignupPage = (props) => {
-  const classes = useStyles();
-  const setPopup = useContext(SetPopupContext);
+  const styles = useStyles();
+  const setPopup = useContext(PopupContext);
 
-  const [loggedin, setLoggedin] = useState(isAuth());
+  const [isLoggedIn, setLoggedin] = useState(getToken());
 
   const [signupDetails, setSignupDetails] = useState({
     type: "applicant",
@@ -143,7 +148,7 @@ const SignupPage = (props) => {
     },
   ]);
 
-  const [inputErrorHandler, setInputErrorHandler] = useState({
+  const [inputError, setinputError] = useState({
     email: {
       untouched: true,
       required: true,
@@ -172,8 +177,8 @@ const SignupPage = (props) => {
   };
 
   const handleInputError = (key, status, message) => {
-    setInputErrorHandler({
-      ...inputErrorHandler,
+    setinputError({
+      ...inputError,
       [key]: {
         required: true,
         untouched: false,
@@ -182,11 +187,35 @@ const SignupPage = (props) => {
       },
     });
   };
+  const handleEmailError = (event) => {
+    const email = event.target.value;
+    if (email === "") {
+      if (true) {
+        handleInputError("email", true, "Email is required");
+      }
+    } else {
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (re.test(String(event.target.value).toLowerCase())) {
+        handleInputError("email", false, "");
+      } else {
+        handleInputError("email", true, "Incorrect email format");
+      }
+    }
+  };
 
-  const handleLogin = () => {
+  const handlePasswordError = (event) => {
+    if (event.target.value === "") {
+      handleInputError("password", true, "Password is required");
+    } else {
+      handleInputError("password", false, "");
+    }
+  };
+
+  const handleSingup = () => {
     const tmpErrorHandler = {};
-    Object.keys(inputErrorHandler).forEach((obj) => {
-      if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
+    Object.keys(inputError).forEach((obj) => {
+      if (inputError[obj].required && inputError[obj].untouched) {
         tmpErrorHandler[obj] = {
           required: true,
           untouched: false,
@@ -194,7 +223,7 @@ const SignupPage = (props) => {
           message: `${obj[0].toUpperCase() + obj.substr(1)} is required`,
         };
       } else {
-        tmpErrorHandler[obj] = inputErrorHandler[obj];
+        tmpErrorHandler[obj] = inputError[obj];
       }
     });
 
@@ -214,17 +243,17 @@ const SignupPage = (props) => {
 
     setSignupDetails(updatedDetails);
 
-    const verified = !Object.keys(tmpErrorHandler).some((obj) => {
+    const isComplete = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
     });
 
-    if (verified) {
+    if (isComplete) {
       axios
         .post(apiList.signup, updatedDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
-          setLoggedin(isAuth());
+          setLoggedin(getToken());
           setPopup({
             open: true,
             severity: "success",
@@ -241,7 +270,7 @@ const SignupPage = (props) => {
           console.log(err.response);
         });
     } else {
-      setInputErrorHandler(tmpErrorHandler);
+      setinputError(tmpErrorHandler);
       setPopup({
         open: true,
         severity: "error",
@@ -250,10 +279,10 @@ const SignupPage = (props) => {
     }
   };
 
-  const handleLoginRecruiter = () => {
+  const handleSingupRecruiter = () => {
     const tmpErrorHandler = {};
-    Object.keys(inputErrorHandler).forEach((obj) => {
-      if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
+    Object.keys(inputError).forEach((obj) => {
+      if (inputError[obj].required && inputError[obj].untouched) {
         tmpErrorHandler[obj] = {
           required: true,
           untouched: false,
@@ -261,7 +290,7 @@ const SignupPage = (props) => {
           message: `${obj[0].toUpperCase() + obj.substr(1)} is required`,
         };
       } else {
-        tmpErrorHandler[obj] = inputErrorHandler[obj];
+        tmpErrorHandler[obj] = inputError[obj];
       }
     });
 
@@ -282,19 +311,19 @@ const SignupPage = (props) => {
 
     setSignupDetails(updatedDetails);
 
-    const verified = !Object.keys(tmpErrorHandler).some((obj) => {
+    const isComplete = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
     });
 
     console.log(updatedDetails);
 
-    if (verified) {
+    if (isComplete) {
       axios
         .post(apiList.signup, updatedDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
-          setLoggedin(isAuth());
+          setLoggedin(getToken());
           setPopup({
             open: true,
             severity: "success",
@@ -311,7 +340,7 @@ const SignupPage = (props) => {
           console.log(err.response);
         });
     } else {
-      setInputErrorHandler(tmpErrorHandler);
+      setinputError(tmpErrorHandler);
       setPopup({
         open: true,
         severity: "error",
@@ -320,12 +349,29 @@ const SignupPage = (props) => {
     }
   };
 
-  return loggedin ? (
-    <Redirect to="/" />
+  return isLoggedIn ? (
+    <Navigate to="/" />
   ) : (
-    <Paper elevation={3} className={classes.body}>
-      <Grid container direction="column" spacing={4} alignItems="center">
-        <Grid item>
+    // <Paper elevation={3} className={styles.body}>
+    <Grid container spacing={4}>
+      <Grid item sm={12} md={6} className={styles.body}>
+        <img
+          src="https://www.imgcorporations.com/images/bg-img.jpg"
+          // src="./assets/images/home.jpg"
+          width={500}
+          height={500}
+          style={{ borderRadius: "50%" }}
+        />
+      </Grid>
+      <Grid
+        item
+        sm={12}
+        md={6}
+        spacing={4}
+        className={styles.body}
+        style={{ height: "100%" }}
+      >
+        <div className={styles.body}>
           <Typography
             variant="h3"
             component="h2"
@@ -333,13 +379,13 @@ const SignupPage = (props) => {
           >
             Sign up
           </Typography>
-        </Grid>
+        </div>
         <Grid item>
           <TextField
             select
             label="Category"
             variant="outlined"
-            className={classes.inputBox}
+            className={styles.inputBox}
             value={signupDetails.type}
             onChange={(event) => {
               handleInput("type", event.target.value);
@@ -354,9 +400,9 @@ const SignupPage = (props) => {
             label="Name"
             value={signupDetails.name}
             onChange={(event) => handleInput("name", event.target.value)}
-            className={classes.inputBox}
-            error={inputErrorHandler.name.error}
-            helperText={inputErrorHandler.name.message}
+            className={styles.inputBox}
+            error={inputError.name.error}
+            helperText={inputError.name.message}
             onBlur={(event) => {
               if (event.target.value === "") {
                 handleInputError("name", true, "Name is required");
@@ -368,31 +414,32 @@ const SignupPage = (props) => {
           />
         </Grid>
         <Grid item>
-          <EmailInput
+          <TextField
             label="Email"
+            variant="outlined"
             value={signupDetails.email}
             onChange={(event) => handleInput("email", event.target.value)}
-            inputErrorHandler={inputErrorHandler}
+            inputError={inputError}
             handleInputError={handleInputError}
-            className={classes.inputBox}
-            required={true}
+            helperText={inputError.email.message}
+            error={inputError.email.error}
+            onBlur={handleEmailError}
+            className={styles.inputBox}
+            margin="normal"
           />
         </Grid>
         <Grid item>
-          <PasswordInput
+          <TextField
             label="Password"
+            variant="outlined"
             value={signupDetails.password}
             onChange={(event) => handleInput("password", event.target.value)}
-            className={classes.inputBox}
-            error={inputErrorHandler.password.error}
-            helperText={inputErrorHandler.password.message}
-            onBlur={(event) => {
-              if (event.target.value === "") {
-                handleInputError("password", true, "Password is required");
-              } else {
-                handleInputError("password", false, "");
-              }
-            }}
+            className={styles.inputBox}
+            error={inputError.password.error}
+            helperText={inputError.password.message}
+            onBlur={handlePasswordError}
+            margin="normal"
+            type="password"
           />
         </Grid>
         {signupDetails.type === "applicant" ? (
@@ -403,7 +450,7 @@ const SignupPage = (props) => {
             />
             <Grid item>
               <ChipInput
-                className={classes.inputBox}
+                className={styles.inputBox}
                 label="Skills"
                 variant="outlined"
                 helperText="Press enter to add skills"
@@ -413,34 +460,20 @@ const SignupPage = (props) => {
               />
             </Grid>
             <Grid item>
-              <FileUploadInput
-                className={classes.inputBox}
+              <FileInput
+                className={styles.inputBox}
                 label="Resume (Images only)"
                 icon={<DescriptionIcon />}
-                // value={files.resume}
-                // onChange={(event) =>
-                //   setFiles({
-                //     ...files,
-                //     resume: event.target.files[0],
-                //   })
-                // }
                 uploadTo={apiList.uploadResume}
                 handleInput={handleInput}
                 identifier={"resume"}
               />
             </Grid>
             <Grid item>
-              <FileUploadInput
-                className={classes.inputBox}
+              <FileInput
+                className={styles.inputBox}
                 label="Profile Photo (.jpg/.png)"
                 icon={<FaceIcon />}
-                // value={files.profileImage}
-                // onChange={(event) =>
-                //   setFiles({
-                //     ...files,
-                //     profileImage: event.target.files[0],
-                //   })
-                // }
                 uploadTo={apiList.uploadProfileImage}
                 handleInput={handleInput}
                 identifier={"profile"}
@@ -470,9 +503,10 @@ const SignupPage = (props) => {
             </Grid>
             <Grid item>
               <PhoneInput
-                country={"in"}
+                country={"ca"}
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
+                className={styles.inputBox}
               />
             </Grid>
           </>
@@ -484,17 +518,18 @@ const SignupPage = (props) => {
             color="primary"
             onClick={() => {
               signupDetails.type === "applicant"
-                ? handleLogin()
-                : handleLoginRecruiter();
+                ? handleSingup()
+                : handleSingupRecruiter();
             }}
-            className={classes.submitButton}
+            className={styles.submitButton}
             style={{ borderRadius: "8px", width: "130px", height: "50px" }}
           >
             Signup
           </Button>
         </Grid>
       </Grid>
-    </Paper>
+    </Grid>
+    // </Paper>
   );
 };
 

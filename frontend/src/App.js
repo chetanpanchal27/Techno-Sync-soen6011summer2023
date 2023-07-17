@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./views/Login";
 import MessagePopupBox from "./Helper/MessagePopupBox";
 import { Grid, makeStyles } from "@material-ui/core";
-import SignUpPage from "./views/Singup";
+import SignUpPage from "./views/Signup";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -34,9 +34,9 @@ function App() {
           <Grid item></Grid>
           <Grid item className={styles.body}>
             <Routes>
-              <Route exact path="/" element={<LoginPage />}></Route>
+              <Route path="/" element={<LoginPage />}></Route>
               <Route path="/login" element={<LoginPage />}></Route>
-              <Route path="/login" element={<SignUpPage />}></Route>
+              <Route path="/signup" element={<SignUpPage />}></Route>
             </Routes>
           </Grid>
         </Grid>
