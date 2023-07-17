@@ -356,7 +356,7 @@ const SignupPage = (props) => {
     <Grid container spacing={4}>
       <Grid item sm={12} md={6} className={styles.body}>
         <img
-          src="https://www.imgcorporations.com/images/bg-img.jpg"
+          src="https://cdn.pixabay.com/photo/2015/06/10/07/03/building-804526_1280.jpg"
           // src="./assets/images/home.jpg"
           width={500}
           height={500}

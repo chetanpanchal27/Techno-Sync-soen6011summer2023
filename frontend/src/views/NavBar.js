@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const styles = useStyles();
+  const navigate = useNavigate();
+
+
+  const handleClick = (location) => {
+    navigate(location);
+  };
 
   return (
     <div className={styles.body}>
@@ -33,7 +40,14 @@ const NavBar = () => {
           <Typography variant="h6" className={styles.title}>
             JOB STATION
           </Typography>
-          <Button color="inherit">Logout</Button>
+          {/* <Button color="inherit">Add Job</Button>           */}
+          {/* <Button color="inherit">Logout</Button>   */}
+          <Button color="inherit" onClick={() => handleClick("/addjob")}>
+              <Typography style={{fontSize:"18px"}}>Add Jobs</Typography>
+          </Button>     
+          <Button color="inherit">
+              <Typography style={{fontSize:"18px"}}>Logout</Typography>
+              </Button>   
         </Toolbar>
       </AppBar>
     </div>

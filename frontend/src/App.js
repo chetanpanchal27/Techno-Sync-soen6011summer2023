@@ -5,6 +5,7 @@ import MessagePopupBox from "./Helper/MessagePopupBox";
 import { Grid, makeStyles } from "@material-ui/core";
 import SignUpPage from "./views/Signup";
 import HomePage from "./views/Home";
+import AddJob from "./views/Employer/AddJob";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -39,6 +40,7 @@ function App() {
               <Route path="/login" element={<LoginPage />}></Route>
               <Route path="/signup" element={<SignUpPage />}></Route>
               <Route path="/home" element={<HomePage />}></Route>
+              <Route path="/addjob" element={<AddJob />}></Route>
             </Routes>
           </Grid>
         </Grid>
