@@ -37,7 +37,7 @@
     <td>chetanpanchal27</td>
     <td>Chetan Sajjansharan Panchal</td>
     <td>Frontend Developer</td>
-    <td>Design UI/UX</td>
+    <td>Design UI/UX, React js, Continous Integration</td>
   </tr>
   <tr>
     <td>urvishkapadiya</td>
