@@ -265,7 +265,7 @@ const SignupPage = (props) => {
           setPopup({
             open: true,
             severity: "error",
-            message: err.response.data.message,
+            message: err?.response?.data?.message,
           });
           console.log(err.response);
         });
