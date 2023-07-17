@@ -141,7 +141,7 @@ const LoginPage = () => {
           setPopup({
             open: true,
             severity: "error",
-            message: err.response.data.message,
+            message: err?.response?.data?.message,
           });
           console.log(err.response);
         });
@@ -155,7 +155,7 @@ const LoginPage = () => {
   };
 
   return isLoggedIn ? (
-    <Navigate to="/signup" />
+    <Navigate to="/home" />
   ) : (
     <Grid container>
       <Grid item sm={12} md={6}>
