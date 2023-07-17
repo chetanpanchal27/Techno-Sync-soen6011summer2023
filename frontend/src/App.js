@@ -4,6 +4,7 @@ import LoginPage from "./views/Login";
 import MessagePopupBox from "./Helper/MessagePopupBox";
 import { Grid, makeStyles } from "@material-ui/core";
 import SignUpPage from "./views/Signup";
+import HomePage from "./views/Home";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -32,11 +33,12 @@ function App() {
       <PopupContext.Provider value={setPopup}>
         <Grid container direction="column">
           <Grid item></Grid>
-          <Grid item className={styles.body}>
+          <Grid item>
             <Routes>
               <Route path="/" element={<LoginPage />}></Route>
               <Route path="/login" element={<LoginPage />}></Route>
               <Route path="/signup" element={<SignUpPage />}></Route>
+              <Route path="/home" element={<HomePage />}></Route>
             </Routes>
           </Grid>
         </Grid>
