@@ -50,13 +50,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   statusBlock: {
     width: "100%",
-    height: "100%",
+
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     textTransform: "uppercase",
+  },
+  buttonStyle: {
+    paddingRight: "10px",
   },
 }));
 
@@ -151,7 +158,7 @@ const JobTile = (props) => {
   return (
     <Paper className={classes.jobTileOuter} elevation={3}>
       <Grid container>
-        <Grid container item xs={9} spacing={1} direction="column">
+        <Grid container xs={6} spacing={1} direction="column">
           <Grid item>
             <Typography variant="h5">{job.title}</Typography>
           </Grid>
@@ -176,8 +183,8 @@ const JobTile = (props) => {
             ))}
           </Grid>
         </Grid>
-        <Grid item container direction="column" xs={3}>
-          <Grid item xs>
+        <Grid container xs={6} className={classes.buttonContainer}>
+          <Grid item className={classes.buttonStyle}>
             <Button
               variant="contained"
               color="primary"
@@ -187,7 +194,7 @@ const JobTile = (props) => {
               View Applications
             </Button>
           </Grid>
-          <Grid item>
+          <Grid item className={classes.buttonStyle}>
             <Button
               variant="contained"
               className={classes.statusBlock}
@@ -195,17 +202,21 @@ const JobTile = (props) => {
                 setOpenUpdate(true);
               }}
               style={{
-                background: "#FC7A1E",
+                background: "#93901b",
                 color: "#fff",
               }}
             >
               Update Details
             </Button>
           </Grid>
-          <Grid item>
+          <Grid item className={classes.buttonStyle}>
             <Button
               variant="contained"
               color="secondary"
+              style={{
+                background: "#ff0000E",
+                color: "#fff",
+              }}
               className={classes.statusBlock}
               onClick={() => {
                 setOpen(true);
