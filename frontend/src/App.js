@@ -6,6 +6,9 @@ import { Grid, makeStyles } from "@material-ui/core";
 import SignUpPage from "./views/Signup";
 import HomePage from "./views/Home";
 import AddJob from "./views/Employer/AddJob";
+import Jobs from "./views/Employer/Jobs";
+import Logout from "./views/Logout";
+import NavBar from "./views/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -33,7 +36,7 @@ function App() {
     <BrowserRouter>
       <PopupContext.Provider value={setPopup}>
         <Grid container direction="column">
-          <Grid item></Grid>
+          <Grid item>{/* <NavBar /> */}</Grid>
           <Grid item>
             <Routes>
               <Route path="/" element={<LoginPage />}></Route>
@@ -41,6 +44,8 @@ function App() {
               <Route path="/signup" element={<SignUpPage />}></Route>
               <Route path="/home" element={<HomePage />}></Route>
               <Route path="/addjob" element={<AddJob />}></Route>
+              <Route exact path="/jobs" element={<Jobs />}></Route>
+              <Route exact path="/logout" element={<Logout />}></Route>
             </Routes>
           </Grid>
         </Grid>

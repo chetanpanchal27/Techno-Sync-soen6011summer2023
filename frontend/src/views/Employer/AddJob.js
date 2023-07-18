@@ -14,6 +14,7 @@ import ChipInput from "material-ui-chip-input";
 
 import { PopupContext } from "../../App";
 import apiList from "../../Helper/Apis";
+import NavBar from "../NavBar";
 
 // import apiList from "../../Helper/apiList";
 
@@ -93,6 +94,9 @@ const AddJob = (props) => {
 
   return (
     <>
+      <Grid>
+        <NavBar />
+      </Grid>
       <Grid
         container
         item
@@ -101,7 +105,12 @@ const AddJob = (props) => {
         style={{ padding: "30px", minHeight: "93vh", width: "50%" }}
       >
         <Grid item>
-          <Typography variant="h2" style={{color:"white",fontWeight:"bold"}}>Add Job</Typography>
+          <Typography
+            variant="h2"
+            style={{ color: "#3f51b5", fontWeight: "bold" }}
+          >
+            Add Job
+          </Typography>
         </Grid>
         <Grid item container xs direction="column" justify="center">
           <Grid item>

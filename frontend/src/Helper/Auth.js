@@ -2,7 +2,7 @@ const getToken = () => {
   return localStorage.getItem("token");
 };
 
-export const userType = () => {
+export const getUserType = () => {
   return localStorage.getItem("type");
 };
 

@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import getToken, { getUserType } from "../Helper/Auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +29,6 @@ const NavBar = () => {
   const styles = useStyles();
   const navigate = useNavigate();
 
-
   const handleClick = (location) => {
     navigate(location);
   };
@@ -40,14 +40,32 @@ const NavBar = () => {
           <Typography variant="h6" className={styles.title}>
             JOB STATION
           </Typography>
-          {/* <Button color="inherit">Add Job</Button>           */}
-          {/* <Button color="inherit">Logout</Button>   */}
-          <Button color="inherit" onClick={() => handleClick("/addjob")}>
-              <Typography style={{fontSize:"18px"}}>Add Jobs</Typography>
-          </Button>     
-          <Button color="inherit">
-              <Typography style={{fontSize:"18px"}}>Logout</Typography>
-              </Button>   
+          {getUserType() === "recruiter" ? (
+            <>
+              <Button color="inherit" onClick={() => handleClick("/home")}>
+                <Typography style={{ fontSize: "18px" }}>Home</Typography>
+              </Button>
+              <Button color="inherit" onClick={() => handleClick("/addjob")}>
+                <Typography style={{ fontSize: "18px" }}>Add Jobs</Typography>
+              </Button>
+              <Button color="inherit" onClick={() => handleClick("/jobs")}>
+                <Typography style={{ fontSize: "18px" }}>Posted</Typography>
+              </Button>
+              <Button color="inherit" onClick={() => handleClick("/logout")}>
+                <Typography style={{ fontSize: "18px" }}>Logout</Typography>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" onClick={() => handleClick("/home")}>
+                <Typography style={{ fontSize: "18px" }}>Home</Typography>
+              </Button>
+
+              <Button color="inherit" onClick={() => handleClick("/logout")}>
+                <Typography style={{ fontSize: "18px" }}>Logout</Typography>
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>
