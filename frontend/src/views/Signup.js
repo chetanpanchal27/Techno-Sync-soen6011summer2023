@@ -8,6 +8,8 @@ import {
   Paper,
   MenuItem,
   Input,
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
@@ -22,6 +24,8 @@ import { PopupContext } from "../App";
 
 import apiList from "../Helper/Apis";
 import getToken from "../Helper/Auth";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import PasswordInput from "./PasswordInput";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -210,6 +214,16 @@ const SignupPage = (props) => {
     } else {
       handleInputError("password", false, "");
     }
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const handleSingup = () => {
@@ -428,20 +442,16 @@ const SignupPage = (props) => {
             margin="normal"
           />
         </Grid>
-        <Grid item>
-          <TextField
-            label="Password"
-            variant="outlined"
-            value={signupDetails.password}
-            onChange={(event) => handleInput("password", event.target.value)}
-            className={styles.inputBox}
-            error={inputError.password.error}
-            helperText={inputError.password.message}
-            onBlur={handlePasswordError}
-            margin="normal"
-            type="password"
-          />
-        </Grid>
+
+        <PasswordInput
+          label="Password"
+          value={signupDetails.password}
+          onChange={(event) => handleInput("password", event.target.value)}
+          className={styles.inputBox}
+          error={inputError.password.error}
+          helperText={inputError.password.message}
+          onBlur={handlePasswordError}
+        />
         {signupDetails.type === "applicant" ? (
           <>
             <MultifieldInput
@@ -482,12 +492,12 @@ const SignupPage = (props) => {
           </>
         ) : (
           <>
-            <Grid item style={{ width: "100%" }}>
+            <Grid item>
               <TextField
+                className={styles.inputBox}
                 label="Bio (upto 250 words)"
                 multiline
                 rows={8}
-                style={{ width: "100%" }}
                 variant="outlined"
                 value={signupDetails.bio}
                 onChange={(event) => {
