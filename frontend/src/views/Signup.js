@@ -26,6 +26,7 @@ import apiList from "../Helper/Apis";
 import getToken from "../Helper/Auth";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import PasswordInput from "./PasswordInput";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -59,6 +60,7 @@ const MultifieldInput = (props) => {
           className={styles.inputBox}
           key={key}
           style={{ paddingLeft: 0, paddingRight: 0 }}
+          spacing={1}
         >
           <Grid item xs={6}>
             <TextField
@@ -103,7 +105,7 @@ const MultifieldInput = (props) => {
       <Grid item>
         <Button
           variant="contained"
-          color="secondary"
+          style={{ background: "#817676", color: "white" }}
           onClick={() =>
             setEducation([
               ...education,
@@ -215,16 +217,6 @@ const SignupPage = (props) => {
     } else {
       handleInputError("password", false, "");
     }
-  };
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
   };
 
   const handleSingup = () => {
@@ -460,10 +452,10 @@ const SignupPage = (props) => {
         </Grid>
         {signupDetails.type === "applicant" ? (
           <>
-            {/* <MultifieldInput
+            <MultifieldInput
               education={education}
               setEducation={setEducation}
-            /> */}
+            />
             <Grid item>
               <ChipInput
                 className={styles.inputBox}

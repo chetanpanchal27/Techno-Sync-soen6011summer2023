@@ -63,6 +63,12 @@ const NavBar = () => {
               <Button color="inherit" onClick={() => handleClick("/jobs")}>
                 <Typography style={{ fontSize: "18px" }}>PostedJobs</Typography>
               </Button>
+              <Button
+                color="inherit"
+                onClick={() => handleClick("/applicants")}
+              >
+                <Typography style={{ fontSize: "18px" }}>Applicants</Typography>
+              </Button>
               <div>
                 <IconButton
                   size="large"
