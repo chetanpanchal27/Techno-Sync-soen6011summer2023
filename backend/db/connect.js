@@ -1,7 +1,9 @@
+dbPassword =
+  "mongodb+srv://kapadiyaurvish16:Urvish1234@cluster0.zmz26ki.mongodb.net/?retryWrites=true&w=majority";
+
 const mongoose = require("mongoose");
-const connectionURL = "mongodb://localhost:27017/";
 mongoose
-  .connect(connectionURL, {
+  .connect(dbPassword, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
