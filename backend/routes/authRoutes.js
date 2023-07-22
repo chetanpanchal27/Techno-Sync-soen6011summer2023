@@ -20,8 +20,7 @@ router.post("/signup", (req, res) => {
   User.findOne({ email: data.email }).then((user) => {
     if (user != null) {
       res.status(400).json({
-        message:
-          "The email address you have entered is already associated with another account.",
+        message: "Email address already exist",
       });
       return;
     } else {
@@ -51,6 +50,7 @@ router.post("/signup", (req, res) => {
                   resume: data.resume,
                   profile: data.profile,
                 });
+          console.log("User --- > ", userDetails);
           userDetails
             .save()
             .then(() => {

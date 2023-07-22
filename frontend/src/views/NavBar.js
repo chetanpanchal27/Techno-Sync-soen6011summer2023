@@ -89,7 +89,9 @@ const NavBar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={() => handleClick("/profile")}>
+                    Profile
+                  </MenuItem>
                   <MenuItem onClick={() => handleClick("/logout")}>
                     Logout
                   </MenuItem>
@@ -132,7 +134,9 @@ const NavBar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={() => handleClick("/profile")}>
+                    Profile
+                  </MenuItem>
                   <MenuItem onClick={() => handleClick("/logout")}>
                     Logout
                   </MenuItem>

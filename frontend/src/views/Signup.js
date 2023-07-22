@@ -269,7 +269,7 @@ const SignupPage = (props) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
           setLoggedin(getToken());
-          navigate("/login");
+          // navigate("/login");
 
           setPopup({
             open: true,
@@ -279,7 +279,7 @@ const SignupPage = (props) => {
           console.log(response);
         })
         .catch((err) => {
-          navigate("/login");
+          // navigate("/login");
           setPopup({
             open: true,
             severity: "error",
@@ -288,7 +288,7 @@ const SignupPage = (props) => {
           console.log(err.response);
         });
     } else {
-      navigate("/login");
+      // navigate("/login");
       setinputError(tmpErrorHandler);
       setPopup({
         open: true,
@@ -484,7 +484,7 @@ const SignupPage = (props) => {
                 handleInput={handleInput}
                 identifier={"resume"}
               />
-            </Grid>
+            </Grid> */}
             <Grid item>
               <FileInput
                 className={styles.inputBox}
@@ -494,7 +494,7 @@ const SignupPage = (props) => {
                 handleInput={handleInput}
                 identifier={"profile"}
               />
-            </Grid> */}
+            </Grid>
           </>
         ) : (
           <>
