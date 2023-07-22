@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import ChipInput from "material-ui-chip-input";
 import DescriptionIcon from "@material-ui/icons/Description";
 import FaceIcon from "@material-ui/icons/Face";
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     width: "400px",
-    marginTop: "5px",
+    marginTop: "20px",
   },
 }));
 
@@ -143,6 +143,7 @@ const SignupPage = (props) => {
   });
 
   const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
 
   const [education, setEducation] = useState([
     {
@@ -268,6 +269,8 @@ const SignupPage = (props) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
           setLoggedin(getToken());
+          navigate("/login");
+
           setPopup({
             open: true,
             severity: "success",
@@ -276,6 +279,7 @@ const SignupPage = (props) => {
           console.log(response);
         })
         .catch((err) => {
+          navigate("/login");
           setPopup({
             open: true,
             severity: "error",
@@ -284,6 +288,7 @@ const SignupPage = (props) => {
           console.log(err.response);
         });
     } else {
+      navigate("/login");
       setinputError(tmpErrorHandler);
       setPopup({
         open: true,
@@ -442,22 +447,23 @@ const SignupPage = (props) => {
             margin="normal"
           />
         </Grid>
-
-        <PasswordInput
-          label="Password"
-          value={signupDetails.password}
-          onChange={(event) => handleInput("password", event.target.value)}
-          className={styles.inputBox}
-          error={inputError.password.error}
-          helperText={inputError.password.message}
-          onBlur={handlePasswordError}
-        />
+        <Grid item>
+          <PasswordInput
+            label="Password"
+            value={signupDetails.password}
+            onChange={(event) => handleInput("password", event.target.value)}
+            className={styles.inputBox}
+            error={inputError.password.error}
+            helperText={inputError.password.message}
+            onBlur={handlePasswordError}
+          />
+        </Grid>
         {signupDetails.type === "applicant" ? (
           <>
-            <MultifieldInput
+            {/* <MultifieldInput
               education={education}
               setEducation={setEducation}
-            />
+            /> */}
             <Grid item>
               <ChipInput
                 className={styles.inputBox}
@@ -469,7 +475,7 @@ const SignupPage = (props) => {
                 }
               />
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <FileInput
                 className={styles.inputBox}
                 label="Resume (Images only)"
@@ -488,7 +494,7 @@ const SignupPage = (props) => {
                 handleInput={handleInput}
                 identifier={"profile"}
               />
-            </Grid>
+            </Grid> */}
           </>
         ) : (
           <>

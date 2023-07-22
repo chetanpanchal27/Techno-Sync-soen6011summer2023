@@ -27,7 +27,7 @@ export const PopupContext = createContext();
 function App() {
   const styles = useStyles();
   const [popup, setPopup] = useState({
-    isOpen: false,
+    open: false,
     severity: "",
     message: "",
   });
@@ -51,11 +51,11 @@ function App() {
         </Grid>
       </PopupContext.Provider>
       <MessagePopupBox
-        open={popup.isOpen}
+        open={popup.open}
         setOpen={(status) =>
           setPopup({
             ...popup,
-            isOpen: status,
+            open: status,
           })
         }
         severity={popup.severity}

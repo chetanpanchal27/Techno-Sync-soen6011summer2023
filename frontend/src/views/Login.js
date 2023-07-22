@@ -157,7 +157,7 @@ const LoginPage = () => {
   return isLoggedIn ? (
     <Navigate to="/home" />
   ) : (
-    <Grid container>
+    <Grid container style={{ marginTop: "5%" }}>
       <Grid item sm={12} md={6}>
         <div className={styles.body}>
           <img
@@ -214,6 +214,7 @@ const LoginPage = () => {
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Login
             </Button>
+
             <div
               style={{
                 display: "flex",

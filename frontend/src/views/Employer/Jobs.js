@@ -31,6 +31,9 @@ import apiList from "../../Helper/Apis";
 import NavBar from "../NavBar";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
   body: {
     height: "inherit",
   },
@@ -50,10 +53,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   statusBlock: {
     width: "100%",
 
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const JobTile = (props) => {
-  const classes = useStyles();
+  const styles = useStyles();
   let navigate = useNavigate();
   const { job, getData } = props;
   const setPopup = useContext(PopupContext);
@@ -156,9 +156,9 @@ const JobTile = (props) => {
   const postedOn = new Date(job.dateOfPosting);
 
   return (
-    <Paper className={classes.jobTileOuter} elevation={3}>
+    <Paper className={styles.jobTileOuter} elevation={3}>
       <Grid container>
-        <Grid container xs={6} spacing={1} direction="column">
+        <Grid container xs={8} spacing={1} direction="column">
           <Grid item>
             <Typography variant="h5">{job.title}</Typography>
           </Grid>
@@ -183,41 +183,47 @@ const JobTile = (props) => {
             ))}
           </Grid>
         </Grid>
-        <Grid container xs={6} className={classes.buttonContainer}>
-          <Grid item className={classes.buttonStyle}>
+        <Grid
+          container
+          xs={4}
+          direction="column"
+          spacing={1}
+          justifyContent="center"
+        >
+          <Grid item className={styles.buttonStyle}>
             <Button
               variant="contained"
               color="primary"
-              className={classes.statusBlock}
+              className={styles.statusBlock}
               onClick={() => handleClick(`/job/applications/${job._id}`)}
             >
               View Applications
             </Button>
           </Grid>
-          <Grid item className={classes.buttonStyle}>
+          <Grid item className={styles.buttonStyle}>
             <Button
               variant="contained"
-              className={classes.statusBlock}
+              className={styles.statusBlock}
               onClick={() => {
                 setOpenUpdate(true);
               }}
               style={{
-                background: "#93901b",
+                background: "#0a8d24",
                 color: "#fff",
               }}
             >
               Update Details
             </Button>
           </Grid>
-          <Grid item className={classes.buttonStyle}>
+          <Grid item className={styles.buttonStyle}>
             <Button
               variant="contained"
               color="secondary"
               style={{
-                background: "#ff0000E",
+                background: "#e80f0f",
                 color: "#fff",
               }}
-              className={classes.statusBlock}
+              className={styles.statusBlock}
               onClick={() => {
                 setOpen(true);
               }}
@@ -227,7 +233,7 @@ const JobTile = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+      <Modal open={open} onClose={handleClose} className={styles.popupDialog}>
         <Paper
           style={{
             padding: "20px",
@@ -269,7 +275,7 @@ const JobTile = (props) => {
       <Modal
         open={openUpdate}
         onClose={handleCloseUpdate}
-        className={classes.popupDialog}
+        className={styles.popupDialog}
       >
         <Paper
           style={{
@@ -362,10 +368,10 @@ const JobTile = (props) => {
 };
 
 const FilterPopup = (props) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;
   return (
-    <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+    <Modal open={open} onClose={handleClose} className={styles.popupDialog}>
       <Paper
         style={{
           padding: "50px",
@@ -719,7 +725,7 @@ const Jobs = (props) => {
       },
     },
   });
-
+  const styles = useStyles();
   const setPopup = useContext(PopupContext);
   useEffect(() => {
     getData();
@@ -819,12 +825,12 @@ const Jobs = (props) => {
           <Grid item xs>
             <Typography
               variant="h2"
-              style={{ color: "#3f51b5", fontWeight: "bold" }}
+              style={{ color: "#817676", fontWeight: "bold" }}
             >
               My Jobs
             </Typography>
           </Grid>
-          <Grid item xs>
+          {/* <Grid item xs>
             <TextField
               label="Search Jobs"
               value={searchOptions.query}
@@ -860,36 +866,37 @@ const Jobs = (props) => {
             <IconButton onClick={() => setFilterOpen(true)}>
               <FilterListIcon />
             </IconButton>
-          </Grid>
+          </Grid> */}
         </Grid>
 
-        <Grid
-          container
-          item
-          xs
-          direction="column"
-          alignItems="stretch"
-          justify="center"
-        >
-          {jobs.length > 0 ? (
-            jobs.map((job) => {
-              return <JobTile job={job} getData={getData} />;
-            })
-          ) : (
-            <Typography
-              variant="h5"
-              style={{
-                height: "50px",
-                textAlign: "center",
-                background: "rgba(255,255,255,0.5)",
-                marginLeft: "25%",
-                marginRight: "25%",
-                paddingTop: "15px",
-              }}
-            >
-              No jobs found
-            </Typography>
-          )}
+        <Grid container className={styles.root}>
+          <Grid item xs={12}>
+            <Grid container spacing={1}>
+              {jobs.length > 0 ? (
+                jobs.map((job) => {
+                  return (
+                    <Grid item>
+                      <JobTile job={job} getData={getData} />
+                    </Grid>
+                  );
+                })
+              ) : (
+                <Typography
+                  variant="h5"
+                  style={{
+                    height: "50px",
+                    textAlign: "center",
+                    background: "rgba(255,255,255,0.5)",
+                    marginLeft: "25%",
+                    marginRight: "25%",
+                    paddingTop: "15px",
+                  }}
+                >
+                  No jobs found
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
       <FilterPopup
