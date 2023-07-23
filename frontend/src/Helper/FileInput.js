@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Grid, Button, TextField, LinearProgress } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
-import Axios from "axios";
+import axios from "axios";
 
 import { PopupContext } from "../App";
 
@@ -14,21 +14,22 @@ const FileInput = (props) => {
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const handleUpload = () => {
-    console.log(file);
+    console.log("File -> ", file);
     const data = new FormData();
-    data.append("image", file);
-    Axios.post(uploadTo, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress: (progressEvent) => {
-        setUploadPercentage(
-          parseInt(
-            Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          )
-        );
-      },
-    })
+    data.append("file", file);
+    axios
+      .post(uploadTo, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          setUploadPercentage(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
+        },
+      })
       .then((response) => {
         console.log(response.data);
         handleInput(identifier, response.data.url);
@@ -42,7 +43,7 @@ const FileInput = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.statusText,
+          message: "Error in uploading",
         });
       });
   };
@@ -62,15 +63,10 @@ const FileInput = (props) => {
               type="file"
               style={{ display: "none" }}
               onChange={(event) => {
-                console.log(event.target.files);
                 setUploadPercentage(0);
                 setFile(event.target.files[0]);
               }}
-              // onChange={onChange}
-              // onChange={
-              //   (e) => {}
-              //   //   setSource({ ...source, place_img: e.target.files[0] })
-              // }
+              name="file"
             />
           </Button>
         </Grid>

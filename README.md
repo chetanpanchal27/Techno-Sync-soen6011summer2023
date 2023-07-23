@@ -102,5 +102,10 @@
     <li>Customer Support and Issue Resolution: The admin provides support and assistance to job seekers and employers, addressing any technical issues, answering inquiries, and resolving disputes or concerns.</li>
     <li>Reporting and Analytics: The admin has access to comprehensive reporting and analytics tools, allowing them to track user activity, generate insights, and make data-driven decisions to improve the functionality and user experience of the portal.</li>
   </ul>
+  <h3>Demo Video</h3>
+  <a href="https://liveconcordia-my.sharepoint.com/:v:/g/personal/d_barot_live_concordia_ca/ETw-MgSPy2pOiw9Nsz4Nr8UBL2ZEZAWgogYlT8q8uoFV9A?e=80lWel">
+    <img src="https://fontawesome.com/icons/circle-play?f=classic&s=solid&pc=%235c98ff" alt="">
+    Sprint 2 Demo Video
+  </a>
 </body>
 </html>

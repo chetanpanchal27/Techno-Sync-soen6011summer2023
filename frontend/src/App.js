@@ -9,6 +9,9 @@ import AddJob from "./views/Employer/AddJob";
 import Jobs from "./views/Employer/Jobs";
 import Logout from "./views/Logout";
 import NavBar from "./views/NavBar";
+import { getUserType } from "./Helper/Auth";
+import EmployerProfile from "./views/Employer/EmployerProfile";
+import UserProfile from "./views/UserProfile";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -27,7 +30,7 @@ export const PopupContext = createContext();
 function App() {
   const styles = useStyles();
   const [popup, setPopup] = useState({
-    isOpen: false,
+    open: false,
     severity: "",
     message: "",
   });
@@ -44,18 +47,29 @@ function App() {
               <Route path="/signup" element={<SignUpPage />}></Route>
               <Route path="/home" element={<HomePage />}></Route>
               <Route path="/addjob" element={<AddJob />}></Route>
-              <Route exact path="/jobs" element={<Jobs />}></Route>
-              <Route exact path="/logout" element={<Logout />}></Route>
+              <Route path="/jobs" element={<Jobs />}></Route>
+              <Route path="/logout" element={<Logout />}></Route>
+
+              <Route
+                path="/profile"
+                element={
+                  getUserType() === "recruiter" ? (
+                    <EmployerProfile />
+                  ) : (
+                    <UserProfile />
+                  )
+                }
+              ></Route>
             </Routes>
           </Grid>
         </Grid>
       </PopupContext.Provider>
       <MessagePopupBox
-        open={popup.isOpen}
+        open={popup.open}
         setOpen={(status) =>
           setPopup({
             ...popup,
-            isOpen: status,
+            open: status,
           })
         }
         severity={popup.severity}
