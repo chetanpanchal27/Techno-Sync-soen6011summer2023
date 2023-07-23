@@ -14,6 +14,7 @@ import EmployerProfile from "./views/Employer/EmployerProfile";
 import UserProfile from "./views/UserProfile";
 import Applicants from "./views/Employer/Applicants";
 import JobApplications from "./views/Employer/JobApplications";
+import UserAppliedJobs from "./views/UserAppliedJobs";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -65,6 +66,10 @@ function App() {
                     <UserProfile />
                   )
                 }
+              ></Route>
+              <Route
+                path="/userapplications"
+                element={<UserAppliedJobs />}
               ></Route>
             </Routes>
           </Grid>

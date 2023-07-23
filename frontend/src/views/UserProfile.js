@@ -17,6 +17,7 @@ import FaceIcon from "@material-ui/icons/Face";
 
 import { PopupContext } from "../App";
 import apiList from "../Helper/Apis";
+import NavBar from "./NavBar";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -88,7 +89,7 @@ const MultifieldInput = (props) => {
       <Grid item style={{ alignSelf: "center" }}>
         <Button
           variant="contained"
-          color="secondary"
+          style={{ background: "#817676", color: "white" }}
           onClick={() =>
             setEducation([
               ...education,
@@ -254,6 +255,9 @@ const UserProfile = (props) => {
 
   return (
     <>
+      <Grid>
+        <NavBar />
+      </Grid>
       <Grid
         container
         item
@@ -272,18 +276,7 @@ const UserProfile = (props) => {
               alignItems: "center",
             }}
           >
-            <Grid
-              container
-              direction="column"
-              alignItems="center"
-              xs={2}
-              style={{
-                display: "center",
-                justifyContent: "center",
-                alignItems: "center",
-                float: "left",
-              }}
-            >
+            <Grid container direction="column" alignItems="center" xs={2}>
               <Avatar
                 src={`${profileDetails.profile}`}
                 className={styles.avatar}

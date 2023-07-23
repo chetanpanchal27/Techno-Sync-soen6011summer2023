@@ -49,14 +49,16 @@ const NavBar = () => {
     <div className={styles.body}>
       <AppBar position="static" style={{ background: "#7e7272" }}>
         <Toolbar>
-          <Typography variant="h6" className={styles.title}>
+          <Typography
+            variant="h6"
+            className={styles.title}
+            onClick={() => handleClick("/home")}
+            style={{ cursor: "pointer" }}
+          >
             JOB STATION
           </Typography>
           {getUserType() === "recruiter" ? (
             <>
-              <Button color="inherit" onClick={() => handleClick("/home")}>
-                <Typography style={{ fontSize: "18px" }}>ViewJobs</Typography>
-              </Button>
               <Button color="inherit" onClick={() => handleClick("/addjob")}>
                 <Typography style={{ fontSize: "18px" }}>AddJobs</Typography>
               </Button>
@@ -106,10 +108,12 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <Button color="inherit" onClick={() => handleClick("/home")}>
-                <Typography style={{ fontSize: "18px" }}>ViewJobs</Typography>
+              <Button
+                color="inherit"
+                onClick={() => handleClick("/userapplications")}
+              >
+                <Typography style={{ fontSize: "18px" }}>Applied</Typography>
               </Button>
-
               <Button color="inherit" onClick={() => handleClick("/logout")}>
                 <Typography style={{ fontSize: "18px" }}>Logout</Typography>
               </Button>
