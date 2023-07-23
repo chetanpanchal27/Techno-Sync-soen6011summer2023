@@ -819,7 +819,7 @@ const Jobs = (props) => {
           item
           container
           direction="column"
-          justify="center"
+          justifyContent="center"
           alignItems="center"
         >
           <Grid item xs>

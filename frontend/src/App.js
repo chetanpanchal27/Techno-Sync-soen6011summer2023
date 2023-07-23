@@ -12,6 +12,9 @@ import NavBar from "./views/NavBar";
 import { getUserType } from "./Helper/Auth";
 import EmployerProfile from "./views/Employer/EmployerProfile";
 import UserProfile from "./views/UserProfile";
+import Applicants from "./views/Employer/Applicants";
+import JobApplications from "./views/Employer/JobApplications";
+import UserAppliedJobs from "./views/UserAppliedJobs";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -49,7 +52,11 @@ function App() {
               <Route path="/addjob" element={<AddJob />}></Route>
               <Route path="/jobs" element={<Jobs />}></Route>
               <Route path="/logout" element={<Logout />}></Route>
-
+              <Route path="/applicants" element={<Applicants />}></Route>
+              <Route
+                path="/job/applications/:jobId"
+                element={<JobApplications />}
+              ></Route>
               <Route
                 path="/profile"
                 element={
@@ -59,6 +66,10 @@ function App() {
                     <UserProfile />
                   )
                 }
+              ></Route>
+              <Route
+                path="/userapplications"
+                element={<UserAppliedJobs />}
               ></Route>
             </Routes>
           </Grid>
