@@ -15,6 +15,7 @@ import "react-phone-input-2/lib/material.css";
 import { PopupContext } from "../../App";
 
 import apiList from "../../Helper/Apis";
+import NavBar from "../NavBar";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -116,6 +117,9 @@ const EmployerProfile = (props) => {
 
   return (
     <>
+      <Grid>
+        <NavBar />
+      </Grid>
       <Grid
         container
         item
@@ -123,7 +127,7 @@ const EmployerProfile = (props) => {
         alignItems="center"
         style={{ padding: "30px", minHeight: "93vh" }}
       >
-        <Grid item xs style={{ width: "100%" }}>
+        <Grid item xs style={{ width: "50%" }}>
           <Paper
             style={{
               padding: "20px",
@@ -135,8 +139,8 @@ const EmployerProfile = (props) => {
               //   width: "60%",
             }}
           >
-            <Grid container direction="column" alignItems="stretch" spacing={3}>
-              <Grid item>
+            <Grid container direction="column" spacing={3}>
+              <Grid item style={{ display: "flex", justifyContent: "center" }}>
                 <Typography
                   variant="h3"
                   component="h2"

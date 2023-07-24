@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "20px 0",
     boxSizing: "border-box",
     width: "100%",
+    minHeight: "95%",
   },
   popupDialog: {
     height: "100%",
@@ -638,14 +639,14 @@ const HomePage = (props) => {
 
   return (
     <>
+      <Grid>
+        <NavBar />
+      </Grid>
       <Grid
         direction="column"
         alignItems="center"
-        style={{ minHeight: "93vh" }}
+        style={{ minHeight: "93vh", padding: "30px" }}
       >
-        <Grid>
-          <NavBar />
-        </Grid>
         <Grid
           container
           direction="column"
