@@ -16,6 +16,7 @@ const apiList = {
   rating: `${baseURL}/api/rating`,
   user: `${baseURL}/api/user`,
   applicants: `${baseURL}/api/applicants`,
+  employers: `${baseURL}/api/employers`,
 };
 
 export default apiList;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -9,7 +9,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { useNavigate } from "react-router-dom";
 import getToken, { getUserType } from "../Helper/Auth";
 import { AccountCircle } from "@material-ui/icons";
-import { Menu, MenuItem } from "@material-ui/core";
+import { Avatar, Menu, MenuItem } from "@material-ui/core";
+import axios from "axios";
+import apiList from "../Helper/Apis";
+import { PopupContext } from "../App";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +34,12 @@ const NavBar = () => {
   const styles = useStyles();
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [userData, setUserData] = useState("");
+  const setPopup = useContext(PopupContext);
+  const [anchorEl, setAnchorEl] = useState(null);
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleClick = (location) => {
     navigate(location);
@@ -45,17 +53,41 @@ const NavBar = () => {
     setAnchorEl(null);
   };
 
+  const getData = () => {
+    axios
+      .get(apiList.user, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUserData(response.data);
+      })
+      .catch((err) => {
+        //console.log(err.response.data);
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Error",
+        });
+      });
+  };
+
   return (
     <div className={styles.body}>
       <AppBar position="static" style={{ background: "#7e7272" }}>
         <Toolbar>
           <Typography
             variant="h6"
-            className={styles.title}
             onClick={() => handleClick("/home")}
             style={{ cursor: "pointer" }}
           >
             JOB STATION
+          </Typography>
+
+          <Typography variant="h6" className={styles.title}>
+            &nbsp;&nbsp;Welcome, back {userData?.name}
           </Typography>
           {getUserType() === "recruiter" ? (
             <>
@@ -80,8 +112,63 @@ const NavBar = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  {/* <AccountCircle /> */}
+                  <Avatar
+                    alt="Recruiter"
+                    src={userData.profile}
+                    style={{ objectFit: "fill" }}
+                  />
                 </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={() => handleClick("/profile")}>
+                    Profile
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClick("/logout")}>
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </div>
+            </>
+          ) : getUserType() === "applicant" ? (
+            <>
+              <Button
+                color="inherit"
+                onClick={() => handleClick("/userapplications")}
+              >
+                <Typography style={{ fontSize: "18px" }}>Applied</Typography>
+              </Button>
+
+              <div>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  {/* <AccountCircle /> */}
+                  <Avatar
+                    alt="User"
+                    src={userData.profile}
+                    style={{ objectFit: "fill" }}
+                  />
+                </IconButton>
+
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
@@ -108,15 +195,9 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <Button
-                color="inherit"
-                onClick={() => handleClick("/userapplications")}
-              >
-                <Typography style={{ fontSize: "18px" }}>Applied</Typography>
-              </Button>
-              <Button color="inherit" onClick={() => handleClick("/logout")}>
-                <Typography style={{ fontSize: "18px" }}>Logout</Typography>
-              </Button>
+              {/* <Button color="inherit" onClick={() => handleClick("/employers")}>
+                <Typography style={{ fontSize: "18px" }}>Employers</Typography>
+              </Button> */}
 
               <div>
                 <IconButton
@@ -127,8 +208,14 @@ const NavBar = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  {/* <AccountCircle /> */}
+                  <Avatar
+                    alt="User"
+                    src={userData.profile}
+                    style={{ objectFit: "fill" }}
+                  />
                 </IconButton>
+
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}

@@ -5,10 +5,10 @@ const jwtAuth = require("../lib/jwtAuthentication");
 const User = require("../db/User");
 const JobApplicant = require("../db/Candidate");
 const Recruiter = require("../db/Employer");
+const Admin = require("../db/Admin");
 const Job = require("../db/Job");
 const Application = require("../db/App");
 const Rating = require("../db/Rating");
-
 //The express.Router() function is used to create a new router object.
 //This function is used when you want to create a new router object in your program to handle requests.
 const router = express.Router();
@@ -50,6 +50,79 @@ router.post("/jobs", jwtAuth, (req, res) => {
     .catch((err) => {
       //Whenever any user sends an invalid request to the server,
       //the server immediately reports it and generates an HTTP based 400 bad request error.
+      res.status(400).json(err);
+    });
+});
+
+//to get all the recruiter info
+router.get("/employers", jwtAuth, async (req, res) => {
+  let recruiterList = await User.find({ type: "recruiter" });
+  console.log("List ----------> ", recruiterList);
+  // res.json(recruiterList);
+  let arr = [
+    {
+      $lookup: {
+        from: "recruiterinfos",
+        localField: "userId",
+        foreignField: "userId",
+        as: "recruiter",
+      },
+    },
+    { $unwind: "$recruiter" },
+  ];
+  Job.aggregate(arr)
+    .then((posts) => {
+      if (posts == null) {
+        res.status(404).json({
+          message: "No job found",
+        });
+        return;
+      }
+      const recruiterInfo = {};
+
+      posts.forEach(
+        ({
+          recruiter,
+          activeApplications,
+          acceptedCandidates,
+          userId: recruiterId,
+        }) => {
+          if (!recruiterInfo[recruiterId]) {
+            recruiterInfo[recruiterId] = {
+              ...recruiter,
+              noOfPost: 1,
+              totalActiveApplications: activeApplications,
+              totalAcceptedCandidates: acceptedCandidates,
+            };
+          } else {
+            recruiterInfo[recruiterId] = {
+              ...recruiter,
+              noOfPost: recruiterInfo[recruiterId].noOfPost + 1,
+              totalActiveApplications:
+                recruiterInfo[recruiterId].totalActiveApplications +
+                activeApplications,
+              totalAcceptedCandidates:
+                recruiterInfo[recruiterId].totalAcceptedCandidates +
+                acceptedCandidates,
+            };
+          }
+        }
+      );
+
+      const result = Object.keys(recruiterInfo).map((recruiterId) => ({
+        userId: recruiterId,
+        name: recruiterInfo[recruiterId].name,
+        contactNumber: recruiterInfo[recruiterId].contactNumber,
+        totalPost: recruiterInfo[recruiterId].noOfPost,
+        totalActiveApplications:
+          recruiterInfo[recruiterId].totalActiveApplications,
+        totalAcceptedCandidates:
+          recruiterInfo[recruiterId].totalAcceptedCandidates,
+      }));
+      console.log("Aray ------", result);
+      res.json(result);
+    })
+    .catch((err) => {
       res.status(400).json(err);
     });
 });
@@ -204,8 +277,6 @@ router.get("/jobs", jwtAuth, (req, res) => {
     ];
   }
 
-  console.log(arr);
-
   Job.aggregate(arr)
     .then((posts) => {
       if (posts == null) {
@@ -332,7 +403,7 @@ router.get("/user", jwtAuth, (req, res) => {
       .catch((err) => {
         res.status(400).json(err);
       });
-  } else {
+  } else if (user.type === "applicant") {
     JobApplicant.findOne({ userId: user._id })
       .then((jobApplicant) => {
         if (jobApplicant == null) {
@@ -342,6 +413,20 @@ router.get("/user", jwtAuth, (req, res) => {
           return;
         }
         res.json(jobApplicant);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    Admin.findOne({ userId: user._id })
+      .then((adminInfo) => {
+        if (adminInfo == null) {
+          res.status(404).json({
+            message: "User does not exist",
+          });
+          return;
+        }
+        res.json(adminInfo);
       })
       .catch((err) => {
         res.status(400).json(err);
