@@ -59,6 +59,294 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+const ApplicationTile = (props) => {
+  const styles = useStyles();
+  const { application, getData } = props;
+  const setPopup = useContext(PopupContext);
+  const [open, setOpen] = useState(false);
+  const [openEndJob, setOpenEndJob] = useState(false);
+  const [rating, setRating] = useState(application.jobApplicant.rating);
+
+  const appliedOn = new Date(application.dateOfApplication);
+
+  const changeRating = () => {
+    axios
+      .put(
+        apiList.rating,
+        { rating: rating, applicantId: application.jobApplicant.userId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Rating updated successfully",
+        });
+        // fetchRating();
+        getData();
+        setOpen(false);
+      })
+      .catch((err) => {
+        // console.log(err.response);
+        console.log(err);
+        setPopup({
+          open: true,
+          severity: "error",
+          message: err.response.data.message,
+        });
+        // fetchRating();
+        getData();
+        setOpen(false);
+      });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCloseEndJob = () => {
+    setOpenEndJob(false);
+  };
+
+  const colorSet = {
+    applied: "#3454D1",
+    shortlisted: "#DC851F",
+    accepted: "#09BC8A",
+    rejected: "#D1345B",
+    deleted: "#B49A67",
+    cancelled: "#FF8484",
+    finished: "#4EA5D9",
+  };
+
+  const getResume = () => {
+    if (
+      application.jobApplicant.resume &&
+      application.jobApplicant.resume !== ""
+    ) {
+      const address = `${application.jobApplicant.resume}`;
+      console.log(address);
+      window.open(address);
+    } else {
+      setPopup({
+        open: true,
+        severity: "error",
+        message: "No resume found",
+      });
+    }
+  };
+
+  const updateStatus = (status) => {
+    const address = `${apiList.applications}/${application._id}`;
+    const statusData = {
+      status: status,
+      dateOfJoining: new Date().toISOString(),
+    };
+    axios
+      .put(address, statusData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        setPopup({
+          open: true,
+          severity: "success",
+          message: response.data.message,
+        });
+        handleCloseEndJob();
+        getData();
+      })
+      .catch((err) => {
+        setPopup({
+          open: true,
+          severity: "error",
+          message: err.response.data.message,
+        });
+        console.log(err.response);
+        handleCloseEndJob();
+      });
+  };
+
+  return (
+    <Paper className={styles.jobTileOuter} elevation={3}>
+      <Grid container>
+        {/* <Grid
+          item
+          xs={2}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar
+            src={`${application.jobApplicant.profile}`}
+            className={styles.avatar}
+          />
+        </Grid> */}
+        <Grid container xs={8} spacing={1} direction="column">
+          <Grid item>
+            <Typography variant="h5">
+              {application.jobApplicant.name}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Rating
+              value={
+                application.jobApplicant.rating !== -1
+                  ? application.jobApplicant.rating
+                  : null
+              }
+              readOnly
+            />
+          </Grid>
+          <Grid item>Job Title: {application.job.title}</Grid>
+          <Grid item>Role: {application.job.jobType}</Grid>
+          <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
+          <Grid item>
+            SOP: {application.sop !== "" ? application.sop : "Not Submitted"}
+          </Grid>
+          <Grid item>
+            {application.jobApplicant.skills.map((skill) => (
+              <Chip label={skill} style={{ marginRight: "2px" }} />
+            ))}
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={1}
+          justifyContent="center"
+          direction="column"
+          xs={4}
+        >
+          <Grid item>
+            <Button
+              variant="contained"
+              className={styles.statusBlock}
+              color="primary"
+              onClick={() => getResume()}
+            >
+              Resume
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              className={styles.statusBlock}
+              style={{
+                background: "#e80f0f",
+                color: "#ffffff",
+              }}
+              onClick={() => {
+                setOpenEndJob(true);
+              }}
+            >
+              Terminate
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              style={{
+                background: "#454942",
+                color: "#ffffff",
+              }}
+              className={styles.statusBlock}
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              Rate Applicant
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Modal open={open} onClose={handleClose} className={styles.popupDialog}>
+        <Paper
+          style={{
+            padding: "20px",
+            outline: "none",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            minWidth: "30%",
+            alignItems: "center",
+          }}
+        >
+          <Rating
+            name="simple-controlled"
+            style={{ marginBottom: "30px" }}
+            value={rating === -1 ? null : rating}
+            onChange={(event, newValue) => {
+              setRating(newValue);
+            }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ padding: "10px 50px" }}
+            onClick={() => changeRating()}
+          >
+            Submit
+          </Button>
+        </Paper>
+      </Modal>
+      <Modal
+        open={openEndJob}
+        onClose={handleCloseEndJob}
+        className={styles.popupDialog}
+      >
+        <Paper
+          style={{
+            padding: "20px",
+            outline: "none",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            minWidth: "30%",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" style={{ marginBottom: "10px" }}>
+            Are you sure?
+          </Typography>
+          <Grid container justify="center" spacing={5}>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{ padding: "10px 50px" }}
+                onClick={() => {
+                  updateStatus("finished");
+                }}
+              >
+                Yes
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ padding: "10px 50px" }}
+                onClick={() => handleCloseEndJob()}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Modal>
+    </Paper>
+  );
+};
+
 const FilterPopup = (props) => {
   const styles = useStyles();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;

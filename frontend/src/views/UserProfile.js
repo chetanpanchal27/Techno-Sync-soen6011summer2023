@@ -173,11 +173,27 @@ const UserProfile = (props) => {
   };
 
   const getResume = () => {
-    const address = `${profileDetails.resume}`;
-    console.log(address);
-    if (address !== "") {
-      window.open(address);
-      // console.log(error);
+    const filename = `${profileDetails.resume}`;
+    console.log("file namee ", filename);
+    console.log(filename);
+    if (filename !== "") {
+      window.open(
+        `${apiList.downloadResume}/${encodeURIComponent(filename)}`,
+        "_blank"
+      );
+      // axios
+      //   .get(`${apiList.downloadResume}/${filename}`)
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((err) => {
+      //     console.log("Error ", err);
+      //     setPopup({
+      //       open: true,
+      //       severity: "error",
+      //       message: err.response.data,
+      //     });
+      //   });
     } else {
       setPopup({
         open: true,

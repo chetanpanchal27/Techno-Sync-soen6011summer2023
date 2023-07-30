@@ -56,7 +56,6 @@ const LoginPage = () => {
   const setPopup = useContext(PopupContext);
 
   const handleUsernameChange = (event) => {
-    console.log("User name -> ", event.target.value);
     setUsername(event.target.value);
   };
 

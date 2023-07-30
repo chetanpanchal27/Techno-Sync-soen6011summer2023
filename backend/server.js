@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const passportConfig = require("./lib/passportConfig");
+const fs = require("fs");
 var cors = require("cors");
 
 require("./db/connect");
@@ -18,6 +19,19 @@ app.use(passportConfig.initialize());
 app.listen(port, () => {
   console.log("Server is listening on port " + port);
 });
+
+// initialising directories
+if (!fs.existsSync("./uploads")) {
+  fs.mkdirSync("./uploads");
+}
+if (!fs.existsSync("./uploads/resume")) {
+  fs.mkdirSync("./uploads/resume");
+}
+if (!fs.existsSync("./uploads/profile")) {
+  fs.mkdirSync("./uploads/profile");
+}
+
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/api", require("./routes/apiRoutes"));
 app.use("/upload", require("./routes/uploadRoutes"));
+app.use("/download", require("./routes/downloadRoutes"));
