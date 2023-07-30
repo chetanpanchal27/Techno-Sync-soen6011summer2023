@@ -56,9 +56,8 @@ router.post("/jobs", jwtAuth, (req, res) => {
 
 //to get all the recruiter info
 router.get("/employers", jwtAuth, async (req, res) => {
-  let recruiterList = await User.find({ type: "recruiter" });
+  const recruiterList = await Recruiter.find({});
   console.log("List ----------> ", recruiterList);
-  // res.json(recruiterList);
   let arr = [
     {
       $lookup: {
@@ -72,12 +71,6 @@ router.get("/employers", jwtAuth, async (req, res) => {
   ];
   Job.aggregate(arr)
     .then((posts) => {
-      if (posts == null) {
-        res.status(404).json({
-          message: "No job found",
-        });
-        return;
-      }
       const recruiterInfo = {};
 
       posts.forEach(
@@ -119,12 +112,61 @@ router.get("/employers", jwtAuth, async (req, res) => {
         totalAcceptedCandidates:
           recruiterInfo[recruiterId].totalAcceptedCandidates,
       }));
+
+      recruiterList.forEach((objInfo) => {
+        if (result.some((obj) => obj.userId != objInfo.userId)) {
+          const newObj = {
+            userId: objInfo.userId.toString(),
+            name: objInfo.name,
+            contactNumber: objInfo.contactNumber,
+            totalPost: 0,
+            totalActiveApplications: 0,
+            totalAcceptedCandidates: 0,
+          };
+          result.push(newObj);
+        }
+      });
       console.log("Aray ------", result);
       res.json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
     });
+});
+
+router.delete("/employers/:ids", jwtAuth, async (req, res) => {
+  const idsToDelete = req.params.ids.split(",");
+  console.log("IDs ", idsToDelete);
+
+  try {
+    // Delete documents from "Application" which contains particular employer(received applications)
+    await Application.deleteMany({
+      recruiterId: {
+        $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)),
+      },
+    });
+
+    // Delete documents from "Jobs" which contains recruiterId (posted jobs)
+    await Job.deleteMany({
+      userId: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    // Delete documents from "RecruiterInfo" which contains userId (employer)
+    await Recruiter.deleteMany({
+      userId: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    // finally,  Delete the user from "User"
+    await User.deleteMany({
+      _id: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    console.log("Deletion completed successfully.");
+    res.json({ message: "Recruiter deleted successfully " });
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(400).json(error);
+  }
 });
 
 // to get all the jobs [pagination] [for recruiter personal and for everyone]
@@ -594,6 +636,7 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
 
       Job.findOne({ _id: jobId })
         .then((job) => {
+          console.log("JOB ", job);
           if (job === null) {
             res.status(404).json({
               message: "Job does not exist",
@@ -630,7 +673,16 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
                           });
                           application
                             .save()
-                            .then(() => {
+                            .then(async () => {
+                              const filter = { _id: jobId }; // Filter current job
+                              const update = {
+                                $inc: { activeApplications: 1 },
+                              }; // Increment activeApplication by 1
+
+                              const result = await Job.updateOne(
+                                filter,
+                                update
+                              );
                               res.json({
                                 message: "Job application successful",
                               });

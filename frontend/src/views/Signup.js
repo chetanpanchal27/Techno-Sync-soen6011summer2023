@@ -177,6 +177,7 @@ const SignupPage = (props) => {
   });
 
   const handleInput = (key, value) => {
+    console.log("Key --> ", key, "Value --> ", value);
     setSignupDetails({
       ...signupDetails,
       [key]: value,
@@ -468,7 +469,7 @@ const SignupPage = (props) => {
                 }
               />
             </Grid>
-            {/* <Grid item>
+            <Grid item>
               <FileInput
                 className={styles.inputBox}
                 label="Resume (Images only)"
@@ -477,7 +478,7 @@ const SignupPage = (props) => {
                 handleInput={handleInput}
                 identifier={"resume"}
               />
-            </Grid> */}
+            </Grid>
             <Grid item>
               <FileInput
                 className={styles.inputBox}

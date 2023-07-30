@@ -34,4 +34,4 @@ if (!fs.existsSync("./uploads/profile")) {
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/api", require("./routes/apiRoutes"));
 app.use("/upload", require("./routes/uploadRoutes"));
-app.use("/host", require("./routes/downloadRoutes"));
+app.use("/download", require("./routes/downloadRoutes"));

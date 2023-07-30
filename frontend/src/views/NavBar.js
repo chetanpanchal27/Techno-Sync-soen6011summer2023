@@ -208,12 +208,15 @@ const NavBar = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  {/* <AccountCircle /> */}
-                  <Avatar
-                    alt="User"
-                    src={userData.profile}
-                    style={{ objectFit: "fill" }}
-                  />
+                  {userData.profile ? (
+                    <Avatar
+                      alt="User"
+                      src={userData.profile}
+                      style={{ objectFit: "fill" }}
+                    />
+                  ) : (
+                    <AccountCircle />
+                  )}
                 </IconButton>
 
                 <Menu

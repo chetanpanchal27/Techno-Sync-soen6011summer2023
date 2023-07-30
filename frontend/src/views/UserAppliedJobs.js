@@ -328,7 +328,7 @@ const UserAppliedJobs = (props) => {
                     paddingTop: "15px",
                   }}
                 >
-                  No Applicant found
+                  No Applicantions found
                 </Typography>
               )}
             </Grid>
