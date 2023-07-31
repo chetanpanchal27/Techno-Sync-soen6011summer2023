@@ -5,10 +5,10 @@ const jwtAuth = require("../lib/jwtAuthentication");
 const User = require("../db/User");
 const JobApplicant = require("../db/Candidate");
 const Recruiter = require("../db/Employer");
+const Admin = require("../db/Admin");
 const Job = require("../db/Job");
 const Application = require("../db/App");
 const Rating = require("../db/Rating");
-
 //The express.Router() function is used to create a new router object.
 //This function is used when you want to create a new router object in your program to handle requests.
 const router = express.Router();
@@ -52,6 +52,121 @@ router.post("/jobs", jwtAuth, (req, res) => {
       //the server immediately reports it and generates an HTTP based 400 bad request error.
       res.status(400).json(err);
     });
+});
+
+//to get all the recruiter info
+router.get("/employers", jwtAuth, async (req, res) => {
+  const recruiterList = await Recruiter.find({});
+  console.log("List ----------> ", recruiterList);
+  let arr = [
+    {
+      $lookup: {
+        from: "recruiterinfos",
+        localField: "userId",
+        foreignField: "userId",
+        as: "recruiter",
+      },
+    },
+    { $unwind: "$recruiter" },
+  ];
+  Job.aggregate(arr)
+    .then((posts) => {
+      const recruiterInfo = {};
+
+      posts.forEach(
+        ({
+          recruiter,
+          activeApplications,
+          acceptedCandidates,
+          userId: recruiterId,
+        }) => {
+          if (!recruiterInfo[recruiterId]) {
+            recruiterInfo[recruiterId] = {
+              ...recruiter,
+              noOfPost: 1,
+              totalActiveApplications: activeApplications,
+              totalAcceptedCandidates: acceptedCandidates,
+            };
+          } else {
+            recruiterInfo[recruiterId] = {
+              ...recruiter,
+              noOfPost: recruiterInfo[recruiterId].noOfPost + 1,
+              totalActiveApplications:
+                recruiterInfo[recruiterId].totalActiveApplications +
+                activeApplications,
+              totalAcceptedCandidates:
+                recruiterInfo[recruiterId].totalAcceptedCandidates +
+                acceptedCandidates,
+            };
+          }
+        }
+      );
+
+      const result = Object.keys(recruiterInfo).map((recruiterId) => ({
+        userId: recruiterId,
+        name: recruiterInfo[recruiterId].name,
+        contactNumber: recruiterInfo[recruiterId].contactNumber,
+        totalPost: recruiterInfo[recruiterId].noOfPost,
+        totalActiveApplications:
+          recruiterInfo[recruiterId].totalActiveApplications,
+        totalAcceptedCandidates:
+          recruiterInfo[recruiterId].totalAcceptedCandidates,
+      }));
+
+      recruiterList.forEach((objInfo) => {
+        if (result.some((obj) => obj.userId != objInfo.userId)) {
+          const newObj = {
+            userId: objInfo.userId.toString(),
+            name: objInfo.name,
+            contactNumber: objInfo.contactNumber,
+            totalPost: 0,
+            totalActiveApplications: 0,
+            totalAcceptedCandidates: 0,
+          };
+          result.push(newObj);
+        }
+      });
+      console.log("Aray ------", result);
+      res.json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+router.delete("/employers/:ids", jwtAuth, async (req, res) => {
+  const idsToDelete = req.params.ids.split(",");
+  console.log("IDs ", idsToDelete);
+
+  try {
+    // Delete documents from "Application" which contains particular employer(received applications)
+    await Application.deleteMany({
+      recruiterId: {
+        $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)),
+      },
+    });
+
+    // Delete documents from "Jobs" which contains recruiterId (posted jobs)
+    await Job.deleteMany({
+      userId: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    // Delete documents from "RecruiterInfo" which contains userId (employer)
+    await Recruiter.deleteMany({
+      userId: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    // finally,  Delete the user from "User"
+    await User.deleteMany({
+      _id: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    console.log("Deletion completed successfully.");
+    res.json({ message: "Recruiter deleted successfully " });
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(400).json(error);
+  }
 });
 
 // to get all the jobs [pagination] [for recruiter personal and for everyone]
@@ -204,8 +319,6 @@ router.get("/jobs", jwtAuth, (req, res) => {
     ];
   }
 
-  console.log(arr);
-
   Job.aggregate(arr)
     .then((posts) => {
       if (posts == null) {
@@ -332,7 +445,7 @@ router.get("/user", jwtAuth, (req, res) => {
       .catch((err) => {
         res.status(400).json(err);
       });
-  } else {
+  } else if (user.type === "applicant") {
     JobApplicant.findOne({ userId: user._id })
       .then((jobApplicant) => {
         if (jobApplicant == null) {
@@ -342,6 +455,20 @@ router.get("/user", jwtAuth, (req, res) => {
           return;
         }
         res.json(jobApplicant);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } else {
+    Admin.findOne({ userId: user._id })
+      .then((adminInfo) => {
+        if (adminInfo == null) {
+          res.status(404).json({
+            message: "User does not exist",
+          });
+          return;
+        }
+        res.json(adminInfo);
       })
       .catch((err) => {
         res.status(400).json(err);
@@ -509,6 +636,7 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
 
       Job.findOne({ _id: jobId })
         .then((job) => {
+          console.log("JOB ", job);
           if (job === null) {
             res.status(404).json({
               message: "Job does not exist",
@@ -545,7 +673,16 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
                           });
                           application
                             .save()
-                            .then(() => {
+                            .then(async () => {
+                              const filter = { _id: jobId }; // Filter current job
+                              const update = {
+                                $inc: { activeApplications: 1 },
+                              }; // Increment activeApplication by 1
+
+                              const result = await Job.updateOne(
+                                filter,
+                                update
+                              );
                               res.json({
                                 message: "Job application successful",
                               });

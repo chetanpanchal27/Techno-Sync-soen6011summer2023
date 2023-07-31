@@ -177,6 +177,7 @@ const SignupPage = (props) => {
   });
 
   const handleInput = (key, value) => {
+    console.log("Key --> ", key, "Value --> ", value);
     setSignupDetails({
       ...signupDetails,
       [key]: value,
@@ -404,6 +405,7 @@ const SignupPage = (props) => {
           >
             <MenuItem value="applicant">Applicant</MenuItem>
             <MenuItem value="recruiter">Recruiter</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
           </TextField>
         </Grid>
         <Grid item>
@@ -467,7 +469,7 @@ const SignupPage = (props) => {
                 }
               />
             </Grid>
-            {/* <Grid item>
+            <Grid item>
               <FileInput
                 className={styles.inputBox}
                 label="Resume (Images only)"
@@ -476,7 +478,7 @@ const SignupPage = (props) => {
                 handleInput={handleInput}
                 identifier={"resume"}
               />
-            </Grid> */}
+            </Grid>
             <Grid item>
               <FileInput
                 className={styles.inputBox}
@@ -490,25 +492,27 @@ const SignupPage = (props) => {
           </>
         ) : (
           <>
-            <Grid item>
-              <TextField
-                className={styles.inputBox}
-                label="Bio (upto 250 words)"
-                multiline
-                rows={8}
-                variant="outlined"
-                value={signupDetails.bio}
-                onChange={(event) => {
-                  if (
-                    event.target.value.split(" ").filter(function (n) {
-                      return n != "";
-                    }).length <= 250
-                  ) {
-                    handleInput("bio", event.target.value);
-                  }
-                }}
-              />
-            </Grid>
+            {signupDetails.type === "recruiter" && (
+              <Grid item>
+                <TextField
+                  className={styles.inputBox}
+                  label="Bio (upto 250 words)"
+                  multiline
+                  rows={8}
+                  variant="outlined"
+                  value={signupDetails.bio}
+                  onChange={(event) => {
+                    if (
+                      event.target.value.split(" ").filter(function (n) {
+                        return n != "";
+                      }).length <= 250
+                    ) {
+                      handleInput("bio", event.target.value);
+                    }
+                  }}
+                />
+              </Grid>
+            )}
             <Grid item>
               <PhoneInput
                 country={"ca"}

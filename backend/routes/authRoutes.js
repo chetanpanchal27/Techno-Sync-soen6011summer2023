@@ -6,6 +6,7 @@ const authKeys = require("../lib/authenticationKeys");
 const User = require("../db/User");
 const JobApplicant = require("../db/Candidate");
 const Recruiter = require("../db/Employer");
+const Admin = require("../db/Admin");
 
 const router = express.Router();
 
@@ -41,7 +42,8 @@ router.post("/signup", (req, res) => {
                   contactNumber: data.contactNumber,
                   bio: data.bio,
                 })
-              : new JobApplicant({
+              : user.type == "applicant"
+              ? new JobApplicant({
                   userId: user._id,
                   name: data.name,
                   education: data.education,
@@ -49,7 +51,13 @@ router.post("/signup", (req, res) => {
                   rating: data.rating,
                   resume: data.resume,
                   profile: data.profile,
+                })
+              : new Admin({
+                  userId: user._id,
+                  name: data.name,
+                  contactNumber: data.contactNumber,
                 });
+
           console.log("User --- > ", userDetails);
           userDetails
             .save()
