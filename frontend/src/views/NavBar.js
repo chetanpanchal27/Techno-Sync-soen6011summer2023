@@ -195,9 +195,16 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              {/* <Button color="inherit" onClick={() => handleClick("/employers")}>
+              <Button color="inherit" onClick={() => handleClick("/employers")}>
                 <Typography style={{ fontSize: "18px" }}>Employers</Typography>
-              </Button> */}
+              </Button>
+
+              <Button
+                color="inherit"
+                onClick={() => handleClick("/candidates")}
+              >
+                <Typography style={{ fontSize: "18px" }}>Candidates</Typography>
+              </Button>
 
               <div>
                 <IconButton

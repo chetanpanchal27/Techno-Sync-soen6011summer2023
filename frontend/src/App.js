@@ -16,6 +16,7 @@ import Applicants from "./views/Employer/Applicants";
 import JobApplications from "./views/Employer/JobApplications";
 import UserAppliedJobs from "./views/UserAppliedJobs";
 import EmployerList from "./views/Admin/EmployerList";
+import CandidateList from "./views/Admin/CandidateList";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -54,7 +55,8 @@ function App() {
               <Route path="/jobs" element={<Jobs />}></Route>
               <Route path="/logout" element={<Logout />}></Route>
               <Route path="/applicants" element={<Applicants />}></Route>
-              {/* <Route path="/employers" element={<EmployerList />}></Route> */}
+              <Route path="/employers" element={<EmployerList />}></Route>
+              <Route path="/candidates" element={<CandidateList />}></Route>
 
               <Route
                 path="/job/applications/:jobId"

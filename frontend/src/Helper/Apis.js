@@ -18,6 +18,8 @@ const apiList = {
   applicants: `${baseURL}/api/applicants`,
   employers: `${baseURL}/api/employers`,
   downloadResume: `${baseURL}/download/resume`,
+  candidates: `${baseURL}/api/candidates`,
+  candidatesApplications: `${baseURL}/api/candidates/applications`,
 };
 
 export default apiList;

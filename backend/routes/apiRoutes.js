@@ -112,9 +112,8 @@ router.get("/employers", jwtAuth, async (req, res) => {
         totalAcceptedCandidates:
           recruiterInfo[recruiterId].totalAcceptedCandidates,
       }));
-
       recruiterList.forEach((objInfo) => {
-        if (result.some((obj) => obj.userId != objInfo.userId)) {
+        if (!result.some((obj) => obj.userId === objInfo.userId.toString())) {
           const newObj = {
             userId: objInfo.userId.toString(),
             name: objInfo.name,
@@ -126,7 +125,6 @@ router.get("/employers", jwtAuth, async (req, res) => {
           result.push(newObj);
         }
       });
-      console.log("Aray ------", result);
       res.json(result);
     })
     .catch((err) => {
@@ -169,6 +167,128 @@ router.delete("/employers/:ids", jwtAuth, async (req, res) => {
   }
 });
 
+router.get("/candidates", jwtAuth, async (req, res) => {
+  const candidateList = await JobApplicant.find({});
+  // console.log("List ----------> ", candidateList);
+  console.log("----------------");
+  try {
+    // res.send(candidateList);
+
+    let arr = [
+      {
+        $lookup: {
+          from: "jobapplicantinfos",
+          localField: "userId",
+          foreignField: "userId",
+          as: "candidate",
+        },
+      },
+      { $unwind: "$candidate" },
+    ];
+    JobApplicant.aggregate([
+      {
+        $lookup: {
+          from: "applications",
+          localField: "userId",
+          foreignField: "userId",
+          as: "application",
+        },
+      },
+    ])
+      .then((candidates) => {
+        if (candidates.length === 0) {
+          res.status(404).json({
+            message: "No Candidate found",
+          });
+          return;
+        }
+
+        res.json(candidates);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+router.get("/candidates/applications/:userId", jwtAuth, async (req, res) => {
+  console.log("Passed id :", req.params.userId);
+  const candidateId = req.params.userId;
+  Application.aggregate([
+    {
+      $match: { userId: mongoose.Types.ObjectId(candidateId) }, // Move the $match stage to the beginning
+    },
+    {
+      $lookup: {
+        from: "jobapplicantinfos",
+        localField: "userId",
+        foreignField: "userId",
+        as: "jobApplicant",
+      },
+    },
+    { $unwind: "$jobApplicant" },
+    {
+      $lookup: {
+        from: "jobs",
+        localField: "jobId",
+        foreignField: "_id",
+        as: "job",
+      },
+    },
+    { $unwind: "$job" },
+    {
+      $lookup: {
+        from: "recruiterinfos",
+        localField: "recruiterId",
+        foreignField: "userId",
+        as: "recruiter",
+      },
+    },
+    { $unwind: "$recruiter" },
+    {
+      $sort: {
+        dateOfApplication: -1,
+      },
+    },
+  ])
+    .then((applications) => {
+      res.json(applications);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+router.delete("/candidates/:ids", jwtAuth, async (req, res) => {
+  const idsToDelete = req.params.ids.split(",");
+  console.log("IDs ", idsToDelete);
+
+  try {
+    // Delete documents from "Application" which contains particular candidate(applied applications)
+    await Application.deleteMany({
+      userId: {
+        $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)),
+      },
+    });
+
+    // Delete documents from "ApplicantInfo" which contains userId (employer)
+    await JobApplicant.deleteMany({
+      userId: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    // finally,  Delete the user from "User"
+    await User.deleteMany({
+      _id: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
+
+    console.log("Deletion completed successfully.");
+    res.json({ message: "Candidate deleted successfully " });
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(400).json(error);
+  }
+});
 // to get all the jobs [pagination] [for recruiter personal and for everyone]
 router.get("/jobs", jwtAuth, (req, res) => {
   let user = req.user;
@@ -1019,7 +1139,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
 // get a list of final applicants for all his jobs : recuiter
 router.get("/applicants", jwtAuth, (req, res) => {
   const user = req.user;
-  if (user.type === "recruiter") {
+  if (user.type === "recruiter" || user.type === "admin") {
     let findParams = {
       recruiterId: user._id,
     };

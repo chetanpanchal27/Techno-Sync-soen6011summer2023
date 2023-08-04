@@ -177,7 +177,6 @@ const SignupPage = (props) => {
   });
 
   const handleInput = (key, value) => {
-    console.log("Key --> ", key, "Value --> ", value);
     setSignupDetails({
       ...signupDetails,
       [key]: value,
