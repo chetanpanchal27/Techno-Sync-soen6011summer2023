@@ -539,20 +539,7 @@ const ApplicationTile = (props) => {
   return (
     <Paper className={styles.jobTileOuter} elevation={3}>
       <Grid container>
-        {/* <Grid
-          item
-          xs={2}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Avatar
-            src={`${application.jobApplicant.profile}`}
-            className={styles.avatar}
-          />
-        </Grid> */}
+        {}
         <Grid container xs={8} spacing={1} direction="column">
           <Grid item>
             <Typography variant="h5">
@@ -717,7 +704,6 @@ const JobApplications = (props) => {
       })
       .catch((err) => {
         console.log(err.response);
-        // console.log(err.response.data);
         setApplications([]);
         setPopup({
           open: true,
@@ -752,11 +738,7 @@ const JobApplications = (props) => {
               Applications
             </Typography>
           </Grid>
-          {/* <Grid item>
-            <IconButton onClick={() => setFilterOpen(true)}>
-              <FilterListIcon />
-            </IconButton>
-          </Grid> */}
+          {}
         </Grid>
 
         <Grid container className={styles.root}>
