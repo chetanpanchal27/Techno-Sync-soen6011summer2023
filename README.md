@@ -63,8 +63,8 @@
     <li>Front-end: React.js, HTML, CSS, Bootstrap, MaterialUI</li>
     <li>Back-end: Node.js, Express.js</li>
     <li>Database: MongoDB</li>
-    <li>Hosting: GitHub Hosting</li>
-    <li>Version Control:Netlify</li>
+    <li>Hosting: Netlify</li>
+    <li>Version Control: GitHub</li>
   </ul>
 
 
