@@ -1,9 +1,5 @@
-const getToken = () => {
-  return localStorage.getItem("token");
-};
+const getToken = () => localStorage.getItem("token");
 
-export const getUserType = () => {
-  return localStorage.getItem("type");
-};
+export const getUserType = () => localStorage.getItem("type");
 
 export default getToken;

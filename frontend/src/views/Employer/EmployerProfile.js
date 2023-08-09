@@ -3,7 +3,6 @@ import {
   Button,
   Grid,
   Typography,
-  Modal,
   Paper,
   makeStyles,
   TextField,
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EmployerProfile = (props) => {
+function EmployerProfile(props) {
   const styles = useStyles();
   const setPopup = useContext(PopupContext);
 
@@ -170,9 +169,8 @@ const EmployerProfile = (props) => {
                   value={profileDetails.bio}
                   onChange={(event) => {
                     if (
-                      event.target.value.split(" ").filter(function (n) {
-                        return n != "";
-                      }).length <= 250
+                      event.target.value.split(" ").filter((n) => n != "")
+                        .length <= 250
                     ) {
                       handleInput("bio", event.target.value);
                     }
@@ -187,7 +185,7 @@ const EmployerProfile = (props) => {
                 }}
               >
                 <PhoneInput
-                  country={"in"}
+                  country="in"
                   value={phone}
                   onChange={(phone) => setPhone(phone)}
                   style={{ width: "auto" }}
@@ -207,6 +205,6 @@ const EmployerProfile = (props) => {
       </Grid>
     </>
   );
-};
+}
 
 export default EmployerProfile;

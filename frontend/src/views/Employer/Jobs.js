@@ -4,7 +4,6 @@ import {
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
   makeStyles,
   Paper,
   TextField,
@@ -12,16 +11,12 @@ import {
   Modal,
   Slider,
   FormControlLabel,
-  FormGroup,
   MenuItem,
   Checkbox,
 } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import Rating from "@material-ui/lab/Rating";
-import Pagination from "@material-ui/lab/Pagination";
 import axios from "axios";
-import SearchIcon from "@material-ui/icons/Search";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
@@ -67,9 +62,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobTile = (props) => {
+function JobTile(props) {
   const styles = useStyles();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { job, getData } = props;
   const setPopup = useContext(PopupContext);
 
@@ -165,14 +160,23 @@ const JobTile = (props) => {
           <Grid item>
             <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
           </Grid>
-          <Grid item>Role : {job.jobType}</Grid>
-          <Grid item>Salary : &#36;{job.salary} per month</Grid>
+          <Grid item>Role :{job.jobType}</Grid>
+          <Grid item>
+            Salary : &#36;
+            {job.salary} per month
+          </Grid>
           <Grid item>
             Duration :{" "}
-            {job.duration !== 0 ? `${job.duration} month` : `Flexible`}
+            {job.duration !== 0 ? `${job.duration} month` : "Flexible"}
           </Grid>
-          <Grid item>Date Of Posting: {postedOn.toLocaleDateString()}</Grid>
-          <Grid item>Number of Applicants: {job.maxApplicants}</Grid>
+          <Grid item>
+            Date Of Posting:
+            {postedOn.toLocaleDateString()}
+          </Grid>
+          <Grid item>
+            Number of Applicants:
+            {job.maxApplicants}
+          </Grid>
           <Grid item>
             Remaining Number of Positions:{" "}
             {job.maxPositions - job.acceptedCandidates}
@@ -365,9 +369,9 @@ const JobTile = (props) => {
       </Modal>
     </Paper>
   );
-};
+}
 
-const FilterPopup = (props) => {
+function FilterPopup(props) {
   const styles = useStyles();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;
   return (
@@ -460,9 +464,7 @@ const FilterPopup = (props) => {
             <Grid item xs={9}>
               <Slider
                 valueLabelDisplay="auto"
-                valueLabelFormat={(value) => {
-                  return value * (100000 / 100);
-                }}
+                valueLabelFormat={(value) => value * (100000 / 100)}
                 marks={[
                   { value: 0, label: "0" },
                   { value: 100, label: "100000" },
@@ -539,7 +541,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="salary">
+                  <label htmlFor="salary">
                     <Typography>Salary</Typography>
                   </label>
                 </Grid>
@@ -595,7 +597,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="duration">
+                  <label htmlFor="duration">
                     <Typography>Duration</Typography>
                   </label>
                 </Grid>
@@ -651,7 +653,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="rating">
+                  <label htmlFor="rating">
                     <Typography>Rating</Typography>
                   </label>
                 </Grid>
@@ -696,9 +698,9 @@ const FilterPopup = (props) => {
       </Paper>
     </Modal>
   );
-};
+}
 
-const Jobs = (props) => {
+function Jobs(props) {
   const [jobs, setJobs] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchOptions, setSearchOptions] = useState({
@@ -732,18 +734,18 @@ const Jobs = (props) => {
   }, []);
 
   const getData = () => {
-    let searchParams = [`myjobs=1`];
+    let searchParams = ["myjobs=1"];
     if (searchOptions.query !== "") {
       searchParams = [...searchParams, `q=${searchOptions.query}`];
     }
     if (searchOptions.jobType.fullTime) {
-      searchParams = [...searchParams, `jobType=Full%20Time`];
+      searchParams = [...searchParams, "jobType=Full%20Time"];
     }
     if (searchOptions.jobType.partTime) {
-      searchParams = [...searchParams, `jobType=Part%20Time`];
+      searchParams = [...searchParams, "jobType=Part%20Time"];
     }
     if (searchOptions.jobType.wfh) {
-      searchParams = [...searchParams, `jobType=Work%20From%20Home`];
+      searchParams = [...searchParams, "jobType=Work%20From%20Home"];
     }
     if (searchOptions.salary[0] != 0) {
       searchParams = [
@@ -761,8 +763,8 @@ const Jobs = (props) => {
       searchParams = [...searchParams, `duration=${searchOptions.duration}`];
     }
 
-    let asc = [],
-      desc = [];
+    let asc = [];
+    let desc = [];
 
     Object.keys(searchOptions.sort).forEach((obj) => {
       const item = searchOptions.sort[obj];
@@ -873,13 +875,11 @@ const Jobs = (props) => {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {jobs.length > 0 ? (
-                jobs.map((job) => {
-                  return (
-                    <Grid item>
-                      <JobTile job={job} getData={getData} />
-                    </Grid>
-                  );
-                })
+                jobs.map((job) => (
+                  <Grid item>
+                    <JobTile job={job} getData={getData} />
+                  </Grid>
+                ))
               ) : (
                 <Typography
                   variant="h5"
@@ -887,7 +887,7 @@ const Jobs = (props) => {
                     height: "50px",
                     textAlign: "center",
                     background: "rgba(255,255,255,0.5)",
-                    marginLeft: "25%",
+                    marginLeft: "45%",
                     marginRight: "25%",
                     paddingTop: "15px",
                   }}
@@ -911,6 +911,6 @@ const Jobs = (props) => {
       />
     </>
   );
-};
+}
 
 export default Jobs;

@@ -1,11 +1,4 @@
-import axios from "axios";
-
-// export default axios.create({
-//   baseURL: `http://localhost:5000`,
-// });
 export const baseURL = "http://localhost:5000";
-//export const server = "https://secret-shelf-87665.herokuapp.com";
-
 const apiList = {
   login: `${baseURL}/auth/login`,
   signup: `${baseURL}/auth/signup`,
@@ -18,6 +11,8 @@ const apiList = {
   applicants: `${baseURL}/api/applicants`,
   employers: `${baseURL}/api/employers`,
   downloadResume: `${baseURL}/download/resume`,
+  candidates: `${baseURL}/api/candidates`,
+  candidatesApplications: `${baseURL}/api/candidates/applications`,
 };
 
 export default apiList;

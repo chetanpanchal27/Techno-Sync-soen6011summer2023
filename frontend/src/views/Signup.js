@@ -5,11 +5,7 @@ import {
   Button,
   Typography,
   makeStyles,
-  Paper,
   MenuItem,
-  Input,
-  InputAdornment,
-  IconButton,
 } from "@material-ui/core";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -24,10 +20,9 @@ import { PopupContext } from "../App";
 
 import apiList from "../Helper/Apis";
 import getToken from "../Helper/Auth";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import PasswordInput from "./PasswordInput";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
+import HomeImage from "../assets/images/image.png";
 const useStyles = makeStyles((theme) => ({
   body: {
     padding: "30px 30px",
@@ -47,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MultifieldInput = (props) => {
+function MultifieldInput(props) {
   const styles = useStyles();
   const { education, setEducation } = props;
 
@@ -102,7 +97,7 @@ const MultifieldInput = (props) => {
           </Grid>
         </Grid>
       ))}
-      <Grid item>
+      {/* <Grid item>
         <Button
           variant="contained"
           style={{ background: "#817676", color: "white" }}
@@ -120,12 +115,12 @@ const MultifieldInput = (props) => {
         >
           Add another institution details
         </Button>
-      </Grid>
+      </Grid> */}
     </>
   );
-};
+}
 
-const SignupPage = (props) => {
+function SignupPage(props) {
   const styles = useStyles();
   const setPopup = useContext(PopupContext);
 
@@ -177,7 +172,6 @@ const SignupPage = (props) => {
   });
 
   const handleInput = (key, value) => {
-    console.log("Key --> ", key, "Value --> ", value);
     setSignupDetails({
       ...signupDetails,
       [key]: value,
@@ -191,7 +185,7 @@ const SignupPage = (props) => {
         required: true,
         untouched: false,
         error: status,
-        message: message,
+        message,
       },
     });
   };
@@ -237,13 +231,13 @@ const SignupPage = (props) => {
 
     console.log(education);
 
-    let updatedDetails = {
+    const updatedDetails = {
       ...signupDetails,
       education: education
         .filter((obj) => obj.institutionName.trim() !== "")
         .map((obj) => {
-          if (obj["endYear"] === "") {
-            delete obj["endYear"];
+          if (obj.endYear === "") {
+            delete obj.endYear;
           }
           return obj;
         }),
@@ -251,9 +245,9 @@ const SignupPage = (props) => {
 
     setSignupDetails(updatedDetails);
 
-    const isComplete = !Object.keys(tmpErrorHandler).some((obj) => {
-      return tmpErrorHandler[obj].error;
-    });
+    const isComplete = !Object.keys(tmpErrorHandler).some(
+      (obj) => tmpErrorHandler[obj].error,
+    );
 
     if (isComplete) {
       axios
@@ -323,9 +317,9 @@ const SignupPage = (props) => {
 
     setSignupDetails(updatedDetails);
 
-    const isComplete = !Object.keys(tmpErrorHandler).some((obj) => {
-      return tmpErrorHandler[obj].error;
-    });
+    const isComplete = !Object.keys(tmpErrorHandler).some(
+      (obj) => tmpErrorHandler[obj].error,
+    );
 
     console.log(updatedDetails);
 
@@ -368,8 +362,7 @@ const SignupPage = (props) => {
     <Grid container spacing={4}>
       <Grid item sm={12} md={6} className={styles.body}>
         <img
-          src="https://cdn.pixabay.com/photo/2015/06/10/07/03/building-804526_1280.jpg"
-          // src="./assets/images/home.jpg"
+          src={HomeImage}
           width={500}
           height={500}
           style={{ borderRadius: "50%" }}
@@ -395,7 +388,7 @@ const SignupPage = (props) => {
         <Grid item>
           <TextField
             select
-            label="Category"
+            label="Role"
             variant="outlined"
             className={styles.inputBox}
             value={signupDetails.type}
@@ -405,7 +398,7 @@ const SignupPage = (props) => {
           >
             <MenuItem value="applicant">Applicant</MenuItem>
             <MenuItem value="recruiter">Recruiter</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            {/* <MenuItem value="admin">Admin</MenuItem> */}
           </TextField>
         </Grid>
         <Grid item>
@@ -472,21 +465,21 @@ const SignupPage = (props) => {
             <Grid item>
               <FileInput
                 className={styles.inputBox}
-                label="Resume (Images only)"
+                label="Resume (Pdfs only)"
                 icon={<DescriptionIcon />}
                 uploadTo={apiList.uploadResume}
                 handleInput={handleInput}
-                identifier={"resume"}
+                identifier="resume"
               />
             </Grid>
             <Grid item>
               <FileInput
                 className={styles.inputBox}
-                label="Profile Photo (.jpg/.png)"
+                label="Profile Picture"
                 icon={<FaceIcon />}
                 uploadTo={apiList.uploadProfileImage}
                 handleInput={handleInput}
-                identifier={"profile"}
+                identifier="profile"
               />
             </Grid>
           </>
@@ -503,9 +496,8 @@ const SignupPage = (props) => {
                   value={signupDetails.bio}
                   onChange={(event) => {
                     if (
-                      event.target.value.split(" ").filter(function (n) {
-                        return n != "";
-                      }).length <= 250
+                      event.target.value.split(" ").filter((n) => n != "")
+                        .length <= 250
                     ) {
                       handleInput("bio", event.target.value);
                     }
@@ -515,7 +507,7 @@ const SignupPage = (props) => {
             )}
             <Grid item>
               <PhoneInput
-                country={"ca"}
+                country="ca"
                 value={phone}
                 onChange={(phone) => setPhone(phone)}
                 className={styles.inputBox}
@@ -524,25 +516,48 @@ const SignupPage = (props) => {
           </>
         )}
 
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              signupDetails.type === "applicant"
-                ? handleSingup()
-                : handleSingupRecruiter();
-            }}
-            className={styles.submitButton}
-            style={{ borderRadius: "8px", width: "130px", height: "50px" }}
-          >
-            Signup
-          </Button>
-        </Grid>
+        <div style={{ display: "flex" }}>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/login")}
+              className={styles.submitButton}
+              style={{
+                borderRadius: "8px",
+                width: "130px",
+                height: "50px",
+                marginLeft: "-56%",
+              }}
+            >
+              Back
+            </Button>
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                signupDetails.type === "applicant"
+                  ? handleSingup()
+                  : handleSingupRecruiter();
+              }}
+              className={styles.submitButton}
+              style={{
+                borderRadius: "8px",
+                width: "130px",
+                marginLeft: "56%",
+                height: "50px",
+              }}
+            >
+              Signup
+            </Button>
+          </div>
+        </div>
       </Grid>
     </Grid>
     // </Paper>
   );
-};
+}
 
 export default SignupPage;

@@ -4,23 +4,16 @@ import {
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
   makeStyles,
   Paper,
-  TextField,
   Typography,
   Modal,
-  Slider,
   FormControlLabel,
-  FormGroup,
-  MenuItem,
   Checkbox,
-  Avatar,
 } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
@@ -65,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FilterPopup = (props) => {
+function FilterPopup(props) {
   const styles = useStyles();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;
   return (
@@ -184,7 +177,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="name">
+                  <label htmlFor="name">
                     <Typography>Name</Typography>
                   </label>
                 </Grid>
@@ -240,7 +233,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="dateOfApplication">
+                  <label htmlFor="dateOfApplication">
                     <Typography>Date of Application</Typography>
                   </label>
                 </Grid>
@@ -296,7 +289,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="rating">
+                  <label htmlFor="rating">
                     <Typography>Rating</Typography>
                   </label>
                 </Grid>
@@ -342,9 +335,9 @@ const FilterPopup = (props) => {
       </Paper>
     </Modal>
   );
-};
+}
 
-const ApplicationTile = (props) => {
+function ApplicationTile(props) {
   const styles = useStyles();
   const { application, getData } = props;
   const setPopup = useContext(PopupContext);
@@ -386,7 +379,7 @@ const ApplicationTile = (props) => {
   const updateStatus = (status) => {
     const address = `${apiList.applications}/${application._id}`;
     const statusData = {
-      status: status,
+      status,
       dateOfJoining: new Date().toISOString(),
     };
     axios
@@ -420,7 +413,7 @@ const ApplicationTile = (props) => {
           <Button
             className={styles.statusBlock}
             style={{
-              background: colorSet["shortlisted"],
+              background: colorSet.shortlisted,
               color: "#ffffff",
             }}
             onClick={() => updateStatus("shortlisted")}
@@ -432,7 +425,7 @@ const ApplicationTile = (props) => {
           <Button
             className={styles.statusBlock}
             style={{
-              background: colorSet["rejected"],
+              background: colorSet.rejected,
               color: "#ffffff",
             }}
             onClick={() => updateStatus("rejected")}
@@ -448,7 +441,7 @@ const ApplicationTile = (props) => {
           <Button
             className={styles.statusBlock}
             style={{
-              background: colorSet["accepted"],
+              background: colorSet.accepted,
               color: "#ffffff",
             }}
             onClick={() => updateStatus("accepted")}
@@ -460,7 +453,7 @@ const ApplicationTile = (props) => {
           <Button
             className={styles.statusBlock}
             style={{
-              background: colorSet["rejected"],
+              background: colorSet.rejected,
               color: "#ffffff",
             }}
             onClick={() => updateStatus("rejected")}
@@ -471,88 +464,67 @@ const ApplicationTile = (props) => {
       </>
     ),
     rejected: (
-      <>
-        <Grid item xs>
-          <Paper
-            className={styles.statusBlock}
-            style={{
-              background: colorSet["rejected"],
-              color: "#ffffff",
-              padding: "6px 1px",
-            }}
-          >
-            Rejected
-          </Paper>
-        </Grid>
-      </>
+      <Grid item xs>
+        <Paper
+          className={styles.statusBlock}
+          style={{
+            background: colorSet.rejected,
+            color: "#ffffff",
+            padding: "6px 1px",
+          }}
+        >
+          Rejected
+        </Paper>
+      </Grid>
     ),
     accepted: (
-      <>
-        <Grid item xs>
-          <Paper
-            className={styles.statusBlock}
-            style={{
-              background: colorSet["accepted"],
-              color: "#ffffff",
-              padding: "6px 1px",
-            }}
-          >
-            Accepted
-          </Paper>
-        </Grid>
-      </>
+      <Grid item xs>
+        <Paper
+          className={styles.statusBlock}
+          style={{
+            background: colorSet.accepted,
+            color: "#ffffff",
+            padding: "6px 1px",
+          }}
+        >
+          Accepted
+        </Paper>
+      </Grid>
     ),
     cancelled: (
-      <>
-        <Grid item xs>
-          <Paper
-            className={styles.statusBlock}
-            style={{
-              background: colorSet["cancelled"],
-              color: "#ffffff",
-              padding: "6px 1px",
-            }}
-          >
-            Cancelled
-          </Paper>
-        </Grid>
-      </>
+      <Grid item xs>
+        <Paper
+          className={styles.statusBlock}
+          style={{
+            background: colorSet.cancelled,
+            color: "#ffffff",
+            padding: "6px 1px",
+          }}
+        >
+          Cancelled
+        </Paper>
+      </Grid>
     ),
     finished: (
-      <>
-        <Grid item xs>
-          <Paper
-            className={styles.statusBlock}
-            style={{
-              background: colorSet["finished"],
-              color: "#ffffff",
-              padding: "6px 1px",
-            }}
-          >
-            Finished
-          </Paper>
-        </Grid>
-      </>
+      <Grid item xs>
+        <Paper
+          className={styles.statusBlock}
+          style={{
+            background: colorSet.finished,
+            color: "#ffffff",
+            padding: "6px 1px",
+          }}
+        >
+          Finished
+        </Paper>
+      </Grid>
     ),
   };
 
   return (
     <Paper className={styles.jobTileOuter} elevation={3}>
       <Grid container>
-        {/* <Grid
-          item
-          xs={2}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Avatar
-            src={`${application.jobApplicant.profile}`}
-            className={styles.avatar}
-          />
-        </Grid> */}
+        {}
         <Grid container xs={8} spacing={1} direction="column">
           <Grid item>
             <Typography variant="h5">
@@ -569,15 +541,19 @@ const ApplicationTile = (props) => {
               readOnly
             />
           </Grid>
-          <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
+          <Grid item>
+            Applied On:
+            {appliedOn.toLocaleDateString()}
+          </Grid>
           <Grid item>
             Education:{" "}
             {application.jobApplicant.education
-              .map((edu) => {
-                return `${edu.institutionName} (${edu.startYear}-${
-                  edu.endYear ? edu.endYear : "Ongoing"
-                })`;
-              })
+              .map(
+                (edu) =>
+                  `${edu.institutionName} (${edu.startYear}-${
+                    edu.endYear ? edu.endYear : "Ongoing"
+                  })`,
+              )
               .join(", ")}
           </Grid>
           <Grid item>
@@ -635,9 +611,9 @@ const ApplicationTile = (props) => {
       </Modal>
     </Paper>
   );
-};
+}
 
-const JobApplications = (props) => {
+function JobApplications(props) {
   const setPopup = useContext(PopupContext);
   const [applications, setApplications] = useState([]);
   const { jobId } = useParams();
@@ -673,17 +649,17 @@ const JobApplications = (props) => {
     let searchParams = [];
 
     if (searchOptions.status.rejected) {
-      searchParams = [...searchParams, `status=rejected`];
+      searchParams = [...searchParams, "status=rejected"];
     }
     if (searchOptions.status.applied) {
-      searchParams = [...searchParams, `status=applied`];
+      searchParams = [...searchParams, "status=applied"];
     }
     if (searchOptions.status.shortlisted) {
-      searchParams = [...searchParams, `status=shortlisted`];
+      searchParams = [...searchParams, "status=shortlisted"];
     }
 
-    let asc = [],
-      desc = [];
+    let asc = [];
+    let desc = [];
 
     Object.keys(searchOptions.sort).forEach((obj) => {
       const item = searchOptions.sort[obj];
@@ -717,7 +693,6 @@ const JobApplications = (props) => {
       })
       .catch((err) => {
         console.log(err.response);
-        // console.log(err.response.data);
         setApplications([]);
         setPopup({
           open: true,
@@ -752,27 +727,21 @@ const JobApplications = (props) => {
               Applications
             </Typography>
           </Grid>
-          {/* <Grid item>
-            <IconButton onClick={() => setFilterOpen(true)}>
-              <FilterListIcon />
-            </IconButton>
-          </Grid> */}
+          {}
         </Grid>
 
         <Grid container className={styles.root}>
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {applications.length > 0 ? (
-                applications.map((application) => {
-                  return (
-                    <Grid item>
-                      <ApplicationTile
-                        application={application}
-                        getData={getData}
-                      />
-                    </Grid>
-                  );
-                })
+                applications.map((application) => (
+                  <Grid item>
+                    <ApplicationTile
+                      application={application}
+                      getData={getData}
+                    />
+                  </Grid>
+                ))
               ) : (
                 <Typography
                   variant="h5"
@@ -780,7 +749,7 @@ const JobApplications = (props) => {
                     height: "50px",
                     textAlign: "center",
                     background: "rgba(255,255,255,0.5)",
-                    marginLeft: "25%",
+                    marginLeft: "45%",
                     marginRight: "25%",
                     paddingTop: "15px",
                   }}
@@ -804,8 +773,6 @@ const JobApplications = (props) => {
       />
     </>
   );
-};
-
-
+}
 
 export default JobApplications;
