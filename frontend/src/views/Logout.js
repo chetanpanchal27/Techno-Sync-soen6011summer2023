@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 
 import { PopupContext } from "../App";
 
-const Logout = (props) => {
+function Logout() {
   const setPopup = useContext(PopupContext);
   useEffect(() => {
     localStorage.removeItem("token");
@@ -15,6 +15,6 @@ const Logout = (props) => {
     });
   }, []);
   return <Navigate to="/login" />;
-};
+}
 
 export default Logout;

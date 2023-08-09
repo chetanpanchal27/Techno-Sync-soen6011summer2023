@@ -3,7 +3,6 @@ import {
   Button,
   Grid,
   Typography,
-  Modal,
   Paper,
   makeStyles,
   TextField,
@@ -11,10 +10,10 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import ChipInput from "material-ui-chip-input";
-import FileInput from "../Helper/FileInput";
 import DescriptionIcon from "@material-ui/icons/Description";
 import FaceIcon from "@material-ui/icons/Face";
-
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import FileInput from "../Helper/FileInput";
 import { PopupContext } from "../App";
 import apiList from "../Helper/Apis";
 import NavBar from "./NavBar";
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MultifieldInput = (props) => {
+function MultifieldInput(props) {
   const styles = useStyles();
   const { education, setEducation } = props;
 
@@ -86,7 +85,7 @@ const MultifieldInput = (props) => {
           </Grid>
         </Grid>
       ))}
-      <Grid item style={{ alignSelf: "center" }}>
+      {/* <Grid item style={{ alignSelf: "center" }}>
         <Button
           variant="contained"
           style={{ background: "#817676", color: "white" }}
@@ -104,12 +103,12 @@ const MultifieldInput = (props) => {
         >
           Add another institution details
         </Button>
-      </Grid>
+      </Grid> */}
     </>
   );
-};
+}
 
-const UserProfile = (props) => {
+function UserProfile(props) {
   const styles = useStyles();
   const setPopup = useContext(PopupContext);
   const [userData, setUserData] = useState();
@@ -158,12 +157,11 @@ const UserProfile = (props) => {
               institutionName: edu.institutionName ? edu.institutionName : "",
               startYear: edu.startYear ? edu.startYear : "",
               endYear: edu.endYear ? edu.endYear : "",
-            }))
+            })),
           );
         }
       })
       .catch((err) => {
-        //console.log(err.response.data);
         setPopup({
           open: true,
           severity: "error",
@@ -179,21 +177,8 @@ const UserProfile = (props) => {
     if (filename !== "") {
       window.open(
         `${apiList.downloadResume}/${encodeURIComponent(filename)}`,
-        "_blank"
+        "_blank",
       );
-      // axios
-      //   .get(`${apiList.downloadResume}/${filename}`)
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((err) => {
-      //     console.log("Error ", err);
-      //     setPopup({
-      //       open: true,
-      //       severity: "error",
-      //       message: err.response.data,
-      //     });
-      //   });
     } else {
       setPopup({
         open: true,
@@ -232,13 +217,13 @@ const UserProfile = (props) => {
   const handleUpdate = () => {
     console.log(education);
 
-    let updatedDetails = {
+    const updatedDetails = {
       ...profileDetails,
       education: education
         .filter((obj) => obj.institutionName.trim() !== "")
         .map((obj) => {
-          if (obj["endYear"] === "") {
-            delete obj["endYear"];
+          if (obj.endYear === "") {
+            delete obj.endYear;
           }
           return obj;
         }),
@@ -307,7 +292,7 @@ const UserProfile = (props) => {
             </Grid>
             <Grid container direction="column" alignItems="" spacing={3}>
               {/* <Grid item >
-              
+
             </Grid> */}
 
               <Grid item>
@@ -338,11 +323,11 @@ const UserProfile = (props) => {
                     })
                   }
                   onDelete={(chip, index) => {
-                    let skills = profileDetails.skills;
+                    const { skills } = profileDetails;
                     skills.splice(index, 1);
                     setProfileDetails({
                       ...profileDetails,
-                      skills: skills,
+                      skills,
                     });
                   }}
                   fullWidth
@@ -355,19 +340,34 @@ const UserProfile = (props) => {
                   icon={<DescriptionIcon />}
                   uploadTo={apiList.uploadResume}
                   handleInput={handleInput}
-                  identifier={"resume"}
+                  identifier="resume"
                 />
               </Grid>
               <Grid item>
-                <Button
-                  variant="contained"
-                  className={styles.statusBlock}
-                  color="primary"
-                  onClick={() => getResume()}
-                  style={{ alignItems: "center" }}
-                >
-                  View Uploaded Resume
-                </Button>
+                <Grid container item xs={12} spacing={0}>
+                  <Grid item xs={9}>
+                    <TextField
+                      label="View Resume"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                      style={{ width: "100%" }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Button
+                      variant="contained"
+                      component="label"
+                      style={{ width: "100%", height: "100%" }}
+                      color="primary"
+                      onClick={() => getResume()}
+                    >
+                      {/* View Uploaded Resume */}
+                      <VisibilityIcon />
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
               <Grid item>
                 <FileInput
@@ -376,7 +376,7 @@ const UserProfile = (props) => {
                   icon={<FaceIcon />}
                   uploadTo={apiList.uploadProfileImage}
                   handleInput={handleInput}
-                  identifier={"profile"}
+                  identifier="profile"
                 />
               </Grid>
             </Grid>
@@ -398,6 +398,6 @@ const UserProfile = (props) => {
       </Grid>
     </>
   );
-};
+}
 
 export default UserProfile;

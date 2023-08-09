@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import ChipInput from "material-ui-chip-input";
 
+import { useNavigate } from "react-router-dom";
 import { PopupContext } from "../../App";
 import apiList from "../../Helper/Apis";
 import NavBar from "../NavBar";
@@ -25,14 +26,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    // padding: "30px",
   },
 }));
 
-const AddJob = (props) => {
+function AddJob(props) {
   const classes = useStyles();
   const setPopup = useContext(PopupContext);
-
+  const navigate = useNavigate();
   const [jobDetails, setJobDetails] = useState({
     title: "",
     maxApplicants: 100,
@@ -79,6 +79,7 @@ const AddJob = (props) => {
           duration: 0,
           salary: 0,
         });
+        navigate("/home");
       })
       .catch((err) => {
         setPopup({
@@ -144,11 +145,11 @@ const AddJob = (props) => {
                     })
                   }
                   onDelete={(chip, index) => {
-                    let skillsets = jobDetails.skillsets;
+                    const { skillsets } = jobDetails;
                     skillsets.splice(index, 1);
                     setJobDetails({
                       ...jobDetails,
-                      skillsets: skillsets,
+                      skillsets,
                     });
                   }}
                   fullWidth
@@ -250,13 +251,13 @@ const AddJob = (props) => {
               style={{ padding: "10px 50px", marginTop: "30px" }}
               onClick={() => handleUpdate()}
             >
-              Create Job
+              Post Job
             </Button>
           </Paper>
         </Grid>
       </Grid>
     </>
   );
-};
+}
 
 export default AddJob;

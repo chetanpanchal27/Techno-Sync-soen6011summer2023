@@ -1,14 +1,13 @@
 import { createContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Grid, makeStyles } from "@material-ui/core";
 import LoginPage from "./views/Login";
 import MessagePopupBox from "./Helper/MessagePopupBox";
-import { Grid, makeStyles } from "@material-ui/core";
 import SignUpPage from "./views/Signup";
 import HomePage from "./views/Home";
 import AddJob from "./views/Employer/AddJob";
 import Jobs from "./views/Employer/Jobs";
 import Logout from "./views/Logout";
-import NavBar from "./views/NavBar";
 import { getUserType } from "./Helper/Auth";
 import EmployerProfile from "./views/Employer/EmployerProfile";
 import UserProfile from "./views/UserProfile";
@@ -16,6 +15,7 @@ import Applicants from "./views/Employer/Applicants";
 import JobApplications from "./views/Employer/JobApplications";
 import UserAppliedJobs from "./views/UserAppliedJobs";
 import EmployerList from "./views/Admin/EmployerList";
+import CandidateList from "./views/Admin/CandidateList";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -46,20 +46,21 @@ function App() {
           <Grid item>{/* <NavBar /> */}</Grid>
           <Grid item>
             <Routes>
-              <Route path="/" element={<LoginPage />}></Route>
-              <Route path="/login" element={<LoginPage />}></Route>
-              <Route path="/signup" element={<SignUpPage />}></Route>
-              <Route path="/home" element={<HomePage />}></Route>
-              <Route path="/addjob" element={<AddJob />}></Route>
-              <Route path="/jobs" element={<Jobs />}></Route>
-              <Route path="/logout" element={<Logout />}></Route>
-              <Route path="/applicants" element={<Applicants />}></Route>
-              {/* <Route path="/employers" element={<EmployerList />}></Route> */}
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/addjob" element={<AddJob />} />
+              <Route path="/jobs" element={<Jobs />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/applicants" element={<Applicants />} />
+              <Route path="/employers" element={<EmployerList />} />
+              <Route path="/candidates" element={<CandidateList />} />
 
               <Route
                 path="/job/applications/:jobId"
                 element={<JobApplications />}
-              ></Route>
+              />
               <Route
                 path="/profile"
                 element={
@@ -71,11 +72,8 @@ function App() {
                     <EmployerProfile />
                   )
                 }
-              ></Route>
-              <Route
-                path="/userapplications"
-                element={<UserAppliedJobs />}
-              ></Route>
+              />
+              <Route path="/userapplications" element={<UserAppliedJobs />} />
             </Routes>
           </Grid>
         </Grid>

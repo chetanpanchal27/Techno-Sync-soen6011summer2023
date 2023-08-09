@@ -11,25 +11,12 @@ import {
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import apiList from "../Helper/Apis";
 import getToken from "../Helper/Auth";
 import { PopupContext } from "../App";
-import { Navigate } from "react-router-dom";
+import HomeImage from "../assets/images/image.png";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      TEAM Techno Sync {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 const useStyles = makeStyles((theme) => ({
   body: {
     display: "flex",
@@ -48,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     width: "300px",
   },
 }));
-const LoginPage = () => {
+function LoginPage() {
   const styles = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -81,7 +68,7 @@ const LoginPage = () => {
       ...inputError,
       [key]: {
         error: status,
-        message: message,
+        message,
       },
     });
   };
@@ -115,12 +102,12 @@ const LoginPage = () => {
     console.log("Button Clicked !!", username, password);
     event.preventDefault();
     // Perform login logic here with username and password
-    const isComplete = !Object.keys(inputError).some((obj) => {
-      return inputError[obj].error;
-    });
+    const isComplete = !Object.keys(inputError).some(
+      (obj) => inputError[obj].error,
+    );
     const loginDetails = {
       email: username,
-      password: password,
+      password,
     };
     if (isComplete) {
       axios
@@ -160,8 +147,7 @@ const LoginPage = () => {
       <Grid item sm={12} md={6}>
         <div className={styles.body}>
           <img
-            src="https://cdn.pixabay.com/photo/2015/06/10/07/03/building-804526_1280.jpg"
-            // src="./assets/images/home.jpg"
+            src={HomeImage}
             width={500}
             height={500}
             style={{ borderRadius: "50%" }}
@@ -225,7 +211,7 @@ const LoginPage = () => {
                 Forgot password?
               </Link>
               <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account? Sign Up
               </Link>
             </div>
           </form>
@@ -234,6 +220,6 @@ const LoginPage = () => {
       {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
     </Grid>
   );
-};
+}
 
 export default LoginPage;

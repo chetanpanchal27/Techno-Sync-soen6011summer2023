@@ -3,8 +3,8 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import axios from "axios";
 import { PopupContext } from "../../App";
 import apiList from "../../Helper/Apis";
+import CandidateTable from "../../Helper/CandidateTable";
 import NavBar from "../NavBar";
-import EmployerTable from "../../Helper/EmployerTable";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function EmployerList(props) {
-  const [employerList, setEmployerList] = useState([]);
-  const [reload, setReload] = useState(false);
+function CandidateList(props) {
+  const [candidateList, setCandidateList] = useState([]);
+
   const styles = useStyles();
   const setPopup = useContext(PopupContext);
   useEffect(() => {
@@ -50,7 +50,7 @@ function EmployerList(props) {
   }, []);
 
   const getData = () => {
-    const address = apiList.employers;
+    const address = apiList.candidates;
     axios
       .get(address, {
         headers: {
@@ -59,7 +59,7 @@ function EmployerList(props) {
       })
       .then((response) => {
         console.log(response.data);
-        setEmployerList(response.data);
+        setCandidateList(response.data);
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -70,11 +70,10 @@ function EmployerList(props) {
         });
       });
   };
-
   const handleDelete = (userIds) => {
     console.log("Ids ", userIds);
 
-    const address = apiList.employers;
+    const address = apiList.candidates;
     axios
       .delete(`${address}/${userIds}`, {
         headers: {
@@ -89,7 +88,6 @@ function EmployerList(props) {
           message: response.data.message,
         });
         await getData();
-        setReload(!reload);
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -122,15 +120,15 @@ function EmployerList(props) {
               variant="h2"
               style={{ color: "#817676", fontWeight: "bold" }}
             >
-              Employer List
+              Candidate List
             </Typography>
           </Grid>
         </Grid>
 
-        {employerList.length > 0 ? (
+        {candidateList.length > 0 ? (
           <Grid container>
-            <EmployerTable
-              employerList={employerList}
+            <CandidateTable
+              candidateList={candidateList}
               handleDelete={handleDelete}
             />
           </Grid>
@@ -146,11 +144,11 @@ function EmployerList(props) {
               paddingTop: "15px",
             }}
           >
-            No Recruiter Found
+            No Candidate Found
           </Typography>
         )}
       </Grid>
     </>
   );
 }
-export default EmployerList;
+export default CandidateList;

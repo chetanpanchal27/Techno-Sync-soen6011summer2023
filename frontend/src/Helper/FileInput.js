@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { Grid, Button, TextField, LinearProgress } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
+import PublishIcon from "@material-ui/icons/Publish";
 import axios from "axios";
 
 import { PopupContext } from "../App";
@@ -25,8 +26,8 @@ const FileInput = (props) => {
         onUploadProgress: (progressEvent) => {
           setUploadPercentage(
             parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
+              Math.round((progressEvent.loaded * 100) / progressEvent.total),
+            ),
           );
         },
       })
@@ -84,12 +85,12 @@ const FileInput = (props) => {
         <Grid item xs={3}>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             style={{ width: "100%", height: "100%" }}
             onClick={() => handleUpload()}
-            disabled={file ? false : true}
+            disabled={!file}
           >
-            <CloudUpload />
+            <PublishIcon />
           </Button>
         </Grid>
       </Grid>
