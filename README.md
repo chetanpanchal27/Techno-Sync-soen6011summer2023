@@ -64,7 +64,7 @@
     <li>Back-end: Node.js, Express.js</li>
     <li>Database: MongoDB</li>
     <li>Hosting: GitHub Hosting</li>
-    <li>Version Control:Github</li>
+    <li>Version Control:Netlify</li>
   </ul>
 
 
