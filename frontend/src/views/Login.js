@@ -15,6 +15,7 @@ import { Navigate } from "react-router-dom";
 import apiList from "../Helper/Apis";
 import getToken from "../Helper/Auth";
 import { PopupContext } from "../App";
+import HomeImage from "../assets/images/image.png";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -146,8 +147,7 @@ function LoginPage() {
       <Grid item sm={12} md={6}>
         <div className={styles.body}>
           <img
-            src="https://cdn.pixabay.com/photo/2015/06/10/07/03/building-804526_1280.jpg"
-            // src="./assets/images/home.jpg"
+            src={HomeImage}
             width={500}
             height={500}
             style={{ borderRadius: "50%" }}

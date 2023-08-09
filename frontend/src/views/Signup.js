@@ -22,6 +22,7 @@ import apiList from "../Helper/Apis";
 import getToken from "../Helper/Auth";
 import PasswordInput from "./PasswordInput";
 
+import HomeImage from "../assets/images/image.png";
 const useStyles = makeStyles((theme) => ({
   body: {
     padding: "30px 30px",
@@ -361,8 +362,7 @@ function SignupPage(props) {
     <Grid container spacing={4}>
       <Grid item sm={12} md={6} className={styles.body}>
         <img
-          src="https://cdn.pixabay.com/photo/2015/06/10/07/03/building-804526_1280.jpg"
-          // src="./assets/images/home.jpg"
+          src={HomeImage}
           width={500}
           height={500}
           style={{ borderRadius: "50%" }}
@@ -398,7 +398,7 @@ function SignupPage(props) {
           >
             <MenuItem value="applicant">Applicant</MenuItem>
             <MenuItem value="recruiter">Recruiter</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            {/* <MenuItem value="admin">Admin</MenuItem> */}
           </TextField>
         </Grid>
         <Grid item>
@@ -530,7 +530,7 @@ function SignupPage(props) {
                 marginLeft: "-56%",
               }}
             >
-              Signin
+              Back
             </Button>
           </div>
           <div>

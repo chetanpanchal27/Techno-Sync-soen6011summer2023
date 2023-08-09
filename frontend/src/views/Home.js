@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   MenuItem,
   Checkbox,
+  InputAdornment,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
@@ -24,6 +25,10 @@ import { PopupContext } from "../App";
 import apiList from "../Helper/Apis";
 import { getUserType } from "../Helper/Auth";
 import NavBar from "./NavBar";
+
+import SearchIcon from "@material-ui/icons/Search";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import BackgroundImage from "../assets/images/background.jpeg";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -554,6 +559,13 @@ function HomePage(props) {
   useEffect(() => {
     getData();
   }, []);
+  const backgroundStyles = {
+    backgroundImage: `url(${BackgroundImage})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    minHeight: "100vh", // Set a minimum height to cover the whole viewport
+  };
 
   const getData = () => {
     let searchParams = [];
@@ -656,43 +668,45 @@ function HomePage(props) {
               Available Jobs
             </Typography>
           </Grid>
-          {/* <Grid item xs>
-            <TextField
-              label="Search Jobs"
-              value={searchOptions.query}
-              onChange={(event) =>
-                setSearchOptions({
-                  ...searchOptions,
-                  query: event.target.value,
-                })
-              }
-              onKeyPress={(ev) => {
-                if (ev.key === "Enter") {
-                  getData();
+          <Grid container justifyContent="center">
+            <Grid item>
+              <TextField
+                label="Search Jobs"
+                value={searchOptions.query}
+                onChange={(event) =>
+                  setSearchOptions({
+                    ...searchOptions,
+                    query: event.target.value,
+                  })
                 }
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment>
-                    <IconButton onClick={() => getData()}>
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              style={{
-                width: "500px",
-                backgroundColor: "white",
-                borderRadius: "12px",
-              }}
-              variant="outlined"
-            />
+                onKeyPress={(ev) => {
+                  if (ev.key === "Enter") {
+                    getData();
+                  }
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment>
+                      <IconButton onClick={() => getData()}>
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                style={{
+                  width: "500px",
+                  backgroundColor: "white",
+                  borderRadius: "12px",
+                }}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item>
+              <IconButton onClick={() => setFilterOpen(true)}>
+                <FilterListIcon />
+              </IconButton>
+            </Grid>
           </Grid>
-          <Grid item>
-            <IconButton onClick={() => setFilterOpen(true)}>
-              <FilterListIcon />
-            </IconButton>
-          </Grid> */}
         </Grid>
 
         <Grid container className={styles.root}>
