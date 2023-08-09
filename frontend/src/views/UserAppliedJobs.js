@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ApplicationTile = (props) => {
+function ApplicationTile(props) {
   const styles = useStyles();
   const { application } = props;
   const setPopup = useContext(PopupContext);
@@ -78,12 +78,12 @@ const ApplicationTile = (props) => {
     axios
       .put(
         apiList.rating,
-        { rating: rating, jobId: application.job._id },
+        { rating, jobId: application.job._id },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       )
       .then((response) => {
         console.log(response.data);
@@ -128,24 +128,36 @@ const ApplicationTile = (props) => {
           <Grid item>
             <Typography variant="h5">{application.job.title}</Typography>
           </Grid>
-          <Grid item>Posted By: {application.recruiter.name}</Grid>
-          <Grid item>Role : {application.job.jobType}</Grid>
-          <Grid item>Salary : &#8377; {application.job.salary} per month</Grid>
+          <Grid item>
+            Posted By:
+            {application.recruiter.name}
+          </Grid>
+          <Grid item>Role :{application.job.jobType}</Grid>
+          <Grid item>
+            Salary : &#8377;
+            {application.job.salary} per month
+          </Grid>
           <Grid item>
             Duration :{" "}
             {application.job.duration !== 0
               ? `${application.job.duration} month`
-              : `Flexible`}
+              : "Flexible"}
           </Grid>
           <Grid item>
             {application.job.skillsets.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
             ))}
           </Grid>
-          <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
+          <Grid item>
+            Applied On:
+            {appliedOn.toLocaleDateString()}
+          </Grid>
           {application.status === "accepted" ||
           application.status === "finished" ? (
-            <Grid item>Joined On: {joinedOn.toLocaleDateString()}</Grid>
+            <Grid item>
+              Joined On:
+              {joinedOn.toLocaleDateString()}
+            </Grid>
           ) : null}
         </Grid>
         <Grid
@@ -218,9 +230,9 @@ const ApplicationTile = (props) => {
       </Modal>
     </Paper>
   );
-};
+}
 
-const UserAppliedJobs = (props) => {
+function UserAppliedJobs(props) {
   const setPopup = useContext(PopupContext);
   const [applications, setApplications] = useState([]);
 
@@ -306,16 +318,14 @@ const UserAppliedJobs = (props) => {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               {applications.length > 0 ? (
-                applications.map((application) => {
-                  return (
-                    <Grid item>
-                      <ApplicationTile
-                        application={application}
-                        getData={getData}
-                      />
-                    </Grid>
-                  );
-                })
+                applications.map((application) => (
+                  <Grid item>
+                    <ApplicationTile
+                      application={application}
+                      getData={getData}
+                    />
+                  </Grid>
+                ))
               ) : (
                 <Typography
                   variant="h5"
@@ -323,12 +333,12 @@ const UserAppliedJobs = (props) => {
                     height: "50px",
                     textAlign: "center",
                     background: "rgba(255,255,255,0.5)",
-                    marginLeft: "25%",
+                    marginLeft: "42%",
                     marginRight: "25%",
                     paddingTop: "15px",
                   }}
                 >
-                  No Applicantions found
+                  No applicantions found
                 </Typography>
               )}
             </Grid>
@@ -337,6 +347,6 @@ const UserAppliedJobs = (props) => {
       </Grid>
     </>
   );
-};
+}
 
 export default UserAppliedJobs;

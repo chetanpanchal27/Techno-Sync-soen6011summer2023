@@ -5,12 +5,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { useNavigate } from "react-router-dom";
-import getToken, { getUserType } from "../Helper/Auth";
-import { AccountCircle } from "@material-ui/icons";
 import { Avatar, Menu, MenuItem } from "@material-ui/core";
 import axios from "axios";
+import { getUserType } from "../Helper/Auth";
 import apiList from "../Helper/Apis";
 import { PopupContext } from "../App";
 
@@ -30,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = () => {
+function NavBar() {
   const styles = useStyles();
   const navigate = useNavigate();
 
@@ -65,7 +63,6 @@ const NavBar = () => {
         setUserData(response.data);
       })
       .catch((err) => {
-        //console.log(err.response.data);
         setPopup({
           open: true,
           severity: "error",
@@ -112,7 +109,6 @@ const NavBar = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  {/* <AccountCircle /> */}
                   <Avatar
                     alt="Recruiter"
                     src={userData.profile}
@@ -215,15 +211,11 @@ const NavBar = () => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  {userData.profile ? (
-                    <Avatar
-                      alt="User"
-                      src={userData.profile}
-                      style={{ objectFit: "fill" }}
-                    />
-                  ) : (
-                    <AccountCircle />
-                  )}
+                  <Avatar
+                    alt="Admin"
+                    src={userData.profile}
+                    style={{ objectFit: "fill" }}
+                  />
                 </IconButton>
 
                 <Menu
@@ -255,5 +247,5 @@ const NavBar = () => {
       </AppBar>
     </div>
   );
-};
+}
 export default NavBar;

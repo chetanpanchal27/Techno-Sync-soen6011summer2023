@@ -28,11 +28,11 @@ import {
   Modal,
   TextField,
 } from "@material-ui/core";
-import apiList from "./Apis";
-import { PopupContext } from "../App";
 import ChipInput from "material-ui-chip-input";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { PopupContext } from "../App";
+import apiList from "./Apis";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -93,7 +93,7 @@ const headCells = [
   },
 ];
 
-const EnhancedTableHead = (props) => {
+function EnhancedTableHead(props) {
   const {
     classes,
     onSelectAllClick,
@@ -122,8 +122,8 @@ const EnhancedTableHead = (props) => {
           <TableCell
             key={headCell.id}
             // align={headCell.numeric ? "right" : "left"}
-            align={"center"}
-            padding={"normal"}
+            align="center"
+            padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -143,7 +143,7 @@ const EnhancedTableHead = (props) => {
       </TableRow>
     </TableHead>
   );
-};
+}
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -175,7 +175,7 @@ const useToolbarclasses = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props) => {
+function EnhancedTableToolbar(props) {
   const classes = useToolbarclasses();
   const { numSelected, handleCandidateDelete } = props;
 
@@ -220,7 +220,7 @@ const EnhancedTableToolbar = (props) => {
       )}
     </Toolbar>
   );
-};
+}
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -277,7 +277,7 @@ const useclasses = makeStyles((theme) => ({
     minHeight: "95%",
   },
 }));
-const ApplicationTile = (props) => {
+function ApplicationTile(props) {
   const styles = useclasses();
   const { application } = props;
 
@@ -300,24 +300,36 @@ const ApplicationTile = (props) => {
           <Grid item>
             <Typography variant="h5">{application.job.title}</Typography>
           </Grid>
-          <Grid item>Posted By: {application.recruiter.name}</Grid>
-          <Grid item>Role : {application.job.jobType}</Grid>
-          <Grid item>Salary : &#8377; {application.job.salary} per month</Grid>
+          <Grid item>
+            Posted By:
+            {application.recruiter.name}
+          </Grid>
+          <Grid item>Role :{application.job.jobType}</Grid>
+          <Grid item>
+            Salary : &#8377;
+            {application.job.salary} per month
+          </Grid>
           <Grid item>
             Duration :{" "}
             {application.job.duration !== 0
               ? `${application.job.duration} month`
-              : `Flexible`}
+              : "Flexible"}
           </Grid>
           <Grid item>
             {application.job.skillsets.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
             ))}
           </Grid>
-          <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
+          <Grid item>
+            Applied On:
+            {appliedOn.toLocaleDateString()}
+          </Grid>
           {application.status === "accepted" ||
           application.status === "finished" ? (
-            <Grid item>Joined On: {joinedOn.toLocaleDateString()}</Grid>
+            <Grid item>
+              Joined On:
+              {joinedOn.toLocaleDateString()}
+            </Grid>
           ) : null}
         </Grid>
         <Grid
@@ -344,8 +356,8 @@ const ApplicationTile = (props) => {
       </Grid>
     </Paper>
   );
-};
-const CandidateTable = (props) => {
+}
+function CandidateTable(props) {
   const { candidateList, handleDelete } = props;
   const setPopup = useContext(PopupContext);
   const navigate = useNavigate();
@@ -407,7 +419,7 @@ const CandidateTable = (props) => {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -436,7 +448,7 @@ const CandidateTable = (props) => {
     if (filename !== undefined && filename !== "") {
       window.open(
         `${apiList.downloadResume}/${encodeURIComponent(filename)}`,
-        "_blank"
+        "_blank",
       );
     } else {
       setPopup({
@@ -450,7 +462,7 @@ const CandidateTable = (props) => {
   const openProfile = (selectedUserId, event) => {
     event.stopPropagation();
     const currentUserInfo = candidateList.find(
-      ({ userId }) => userId === selectedUserId
+      ({ userId }) => userId === selectedUserId,
     );
     setProfileDetails(currentUserInfo);
     console.log("Profile details ", currentUserInfo);
@@ -460,7 +472,7 @@ const CandidateTable = (props) => {
           institutionName: edu.institutionName ? edu.institutionName : "",
           startYear: edu.startYear ? edu.startYear : "",
           endYear: edu.endYear ? edu.endYear : "",
-        }))
+        })),
       );
     }
 
@@ -486,7 +498,7 @@ const CandidateTable = (props) => {
     setApplications([]);
   };
 
-  const EducationInput = (props) => {
+  function EducationInput(props) {
     const styles = useclasses();
     const { education, setEducation } = props;
     return (
@@ -499,7 +511,7 @@ const CandidateTable = (props) => {
                 value={education[key].institutionName}
                 variant="outlined"
                 fullWidth
-                disabled={true}
+                disabled
               />
             </Grid>
             <Grid item xs={3}>
@@ -508,7 +520,7 @@ const CandidateTable = (props) => {
                 value={obj.startYear}
                 variant="outlined"
                 type="number"
-                disabled={true}
+                disabled
               />
             </Grid>
             <Grid item xs={3}>
@@ -517,16 +529,16 @@ const CandidateTable = (props) => {
                 value={obj.endYear}
                 variant="outlined"
                 type="number"
-                disabled={true}
+                disabled
               />
             </Grid>
           </Grid>
         ))}
       </>
     );
-  };
+  }
 
-  const UserProfileInput = () => {
+  function UserProfileInput() {
     return (
       <Grid
         container
@@ -566,7 +578,7 @@ const CandidateTable = (props) => {
                   className={classes.inputBox}
                   variant="outlined"
                   fullWidth
-                  disabled={true}
+                  disabled
                 />
               </Grid>
               <EducationInput
@@ -581,7 +593,7 @@ const CandidateTable = (props) => {
                   helperText="Press enter to add skills"
                   value={profileDetails.skills}
                   fullWidth
-                  disabled={true}
+                  disabled
                 />
               </Grid>
 
@@ -616,7 +628,7 @@ const CandidateTable = (props) => {
         </Grid>
       </Grid>
     );
-  };
+  }
 
   const handleCandidateDelete = () => {
     console.log("Selected ", selected);
@@ -658,7 +670,7 @@ const CandidateTable = (props) => {
     setApplications([]);
   };
 
-  const UserApplicationInput = () => {
+  function UserApplicationInput() {
     return (
       <div style={{ maxHeight: "535px", overflow: "auto" }}>
         <Grid container>
@@ -673,13 +685,11 @@ const CandidateTable = (props) => {
                 <Grid item xs={12}>
                   <Grid container spacing={1}>
                     {applications.length > 0 ? (
-                      applications.map((application) => {
-                        return (
-                          <Grid item>
-                            <ApplicationTile application={application} />
-                          </Grid>
-                        );
-                      })
+                      applications.map((application) => (
+                        <Grid item>
+                          <ApplicationTile application={application} />
+                        </Grid>
+                      ))
                     ) : (
                       <Typography
                         variant="h5"
@@ -720,7 +730,7 @@ const CandidateTable = (props) => {
         </Grid>
       </div>
     );
-  };
+  }
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -732,7 +742,7 @@ const CandidateTable = (props) => {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={"medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -831,5 +841,5 @@ const CandidateTable = (props) => {
       </Modal>
     </div>
   );
-};
+}
 export default CandidateTable;

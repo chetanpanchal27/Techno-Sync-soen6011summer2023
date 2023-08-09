@@ -1,36 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import {
-  Button,
-  Chip,
-  Grid,
-  IconButton,
-  InputAdornment,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
-  Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
-  Checkbox,
-} from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
-import Pagination from "@material-ui/lab/Pagination";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import axios from "axios";
-import SearchIcon from "@material-ui/icons/Search";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-
 import { PopupContext } from "../../App";
-
 import apiList from "../../Helper/Apis";
-import getToken, { getUserType } from "../../Helper/Auth";
-import NavBar from "../../views/NavBar";
-import EmployerTable from "../../Helper/EmployerTable";
 import CandidateTable from "../../Helper/CandidateTable";
+import NavBar from "../NavBar";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -66,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CandidateList = (props) => {
+function CandidateList(props) {
   const [candidateList, setCandidateList] = useState([]);
 
   const styles = useStyles();
@@ -76,7 +50,7 @@ const CandidateList = (props) => {
   }, []);
 
   const getData = () => {
-    let address = apiList.candidates;
+    const address = apiList.candidates;
     axios
       .get(address, {
         headers: {
@@ -99,7 +73,7 @@ const CandidateList = (props) => {
   const handleDelete = (userIds) => {
     console.log("Ids ", userIds);
 
-    let address = apiList.candidates;
+    const address = apiList.candidates;
     axios
       .delete(`${address}/${userIds}`, {
         headers: {
@@ -176,5 +150,5 @@ const CandidateList = (props) => {
       </Grid>
     </>
   );
-};
+}
 export default CandidateList;

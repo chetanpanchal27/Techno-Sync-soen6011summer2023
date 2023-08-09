@@ -16,8 +16,6 @@ import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
@@ -86,7 +84,7 @@ const headCells = [
   },
 ];
 
-const EnhancedTableHead = (props) => {
+function EnhancedTableHead(props) {
   const {
     classes,
     onSelectAllClick,
@@ -135,7 +133,7 @@ const EnhancedTableHead = (props) => {
       </TableRow>
     </TableHead>
   );
-};
+}
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -167,7 +165,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props) => {
+function EnhancedTableToolbar(props) {
   const classes = useToolbarStyles();
   const { numSelected, handleRecruiterDelete } = props;
 
@@ -212,7 +210,7 @@ const EnhancedTableToolbar = (props) => {
       )}
     </Toolbar>
   );
-};
+}
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -242,7 +240,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EmployerTable = (props) => {
+function EmployerTable(props) {
   const { employerList, handleDelete } = props;
   console.log("EMPLOEY ", employerList);
   const classes = useStyles();
@@ -284,7 +282,7 @@ const EmployerTable = (props) => {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -321,7 +319,7 @@ const EmployerTable = (props) => {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={"medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -395,5 +393,5 @@ const EmployerTable = (props) => {
       </Paper>
     </div>
   );
-};
+}
 export default EmployerTable;

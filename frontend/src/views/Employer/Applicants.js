@@ -4,18 +4,11 @@ import {
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
   makeStyles,
   Paper,
-  TextField,
   Typography,
   Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
   Checkbox,
-  Avatar,
 } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import Rating from "@material-ui/lab/Rating";
@@ -59,8 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-const ApplicationTile = (props) => {
+function ApplicationTile(props) {
   const styles = useStyles();
   const { application, getData } = props;
   const setPopup = useContext(PopupContext);
@@ -74,12 +66,12 @@ const ApplicationTile = (props) => {
     axios
       .put(
         apiList.rating,
-        { rating: rating, applicantId: application.jobApplicant.userId },
+        { rating, applicantId: application.jobApplicant.userId },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       )
       .then((response) => {
         console.log(response.data);
@@ -144,7 +136,7 @@ const ApplicationTile = (props) => {
   const updateStatus = (status) => {
     const address = `${apiList.applications}/${application._id}`;
     const statusData = {
-      status: status,
+      status,
       dateOfJoining: new Date().toISOString(),
     };
     axios
@@ -206,9 +198,18 @@ const ApplicationTile = (props) => {
               readOnly
             />
           </Grid>
-          <Grid item>Job Title: {application.job.title}</Grid>
-          <Grid item>Role: {application.job.jobType}</Grid>
-          <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
+          <Grid item>
+            Job Title:
+            {application.job.title}
+          </Grid>
+          <Grid item>
+            Role:
+            {application.job.jobType}
+          </Grid>
+          <Grid item>
+            Applied On:
+            {appliedOn.toLocaleDateString()}
+          </Grid>
           <Grid item>
             SOP: {application.sop !== "" ? application.sop : "Not Submitted"}
           </Grid>
@@ -345,9 +346,9 @@ const ApplicationTile = (props) => {
       </Modal>
     </Paper>
   );
-};
+}
 
-const FilterPopup = (props) => {
+function FilterPopup(props) {
   const styles = useStyles();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;
   return (
@@ -394,7 +395,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="name">
+                  <label htmlFor="name">
                     <Typography>Name</Typography>
                   </label>
                 </Grid>
@@ -450,7 +451,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="jobTitle">
+                  <label htmlFor="jobTitle">
                     <Typography>Job Title</Typography>
                   </label>
                 </Grid>
@@ -506,7 +507,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="dateOfJoining">
+                  <label htmlFor="dateOfJoining">
                     <Typography>Date of Joining</Typography>
                   </label>
                 </Grid>
@@ -562,7 +563,7 @@ const FilterPopup = (props) => {
                   />
                 </Grid>
                 <Grid item>
-                  <label for="rating">
+                  <label htmlFor="rating">
                     <Typography>Rating</Typography>
                   </label>
                 </Grid>
@@ -608,9 +609,9 @@ const FilterPopup = (props) => {
       </Paper>
     </Modal>
   );
-};
+}
 
-const Applicants = (props) => {
+function Applicants(props) {
   const setPopup = useContext(PopupContext);
   const styles = useStyles();
   const [applications, setApplications] = useState([]);
@@ -642,10 +643,10 @@ const Applicants = (props) => {
 
   const getData = () => {
     let searchParams = [];
-    searchParams = [...searchParams, `status=accepted`];
+    searchParams = [...searchParams, "status=accepted"];
 
-    let asc = [],
-      desc = [];
+    let asc = [];
+    let desc = [];
 
     Object.keys(searchOptions.sort).forEach((obj) => {
       const item = searchOptions.sort[obj];
@@ -724,16 +725,14 @@ const Applicants = (props) => {
           <Grid item xs={12}>
             <Grid container spacing={1} justifyContent="center">
               {applications.length > 0 ? (
-                applications.map((application) => {
-                  return (
-                    <Grid item>
-                      <ApplicationTile
-                        application={application}
-                        getData={getData}
-                      />
-                    </Grid>
-                  );
-                })
+                applications.map((application) => (
+                  <Grid item>
+                    <ApplicationTile
+                      application={application}
+                      getData={getData}
+                    />
+                  </Grid>
+                ))
               ) : (
                 <Typography
                   variant="h5"
@@ -765,6 +764,6 @@ const Applicants = (props) => {
       />
     </>
   );
-};
+}
 
 export default Applicants;
