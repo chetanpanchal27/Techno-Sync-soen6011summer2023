@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-  <h2>Project Description</h2>
+  <h2>Project Description:-</h2>
 
   <p>This project aims to provide a comprehensive career services platform where students can showcase their portfolios and employers can post job openings. It offers a convenient and efficient way for job seekers to find relevant employment opportunities and for employers to identify potential candidates. The platform allows students to create and update their profiles, apply for jobs, and track their applications. Employers can create job posts, review candidate applications, and select candidates for interviews. The system prioritizes security, ensuring the protection of login credentials and providing notifications to both employers and students. </p>
 
